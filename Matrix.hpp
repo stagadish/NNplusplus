@@ -14,35 +14,19 @@
 
 #include <iostream>
 #include <utility>          // std::swap and std::move
+#include <vector>
 #include <cmath>            // INFINITY
 
 class Matrix {
 public:
     
     /**********************************************************
-     * Constructors, Copy/Move/Assignment operators, Destructor
+     * Constructors
      **********************************************************/
-    
     
     // Basic ctor to inisialize a matrix of size m by n.
     // All matrix positions will be initialized to 0.
     Matrix(size_t m = 0, size_t n = 0);
-    
-    // COPY ctor
-    Matrix(const Matrix &rhs);
-    
-    // Copy assignment operator
-    Matrix& operator=(const Matrix &rhs);
-
-    // MOVE ctor
-    Matrix(Matrix &&rhs);
-    
-    // Move assignment operator
-    Matrix& operator=(Matrix &&rhs);
-    
-    // dealloc matrix_ (dtor)
-    ~Matrix();
-    
     
     /**********************************************************
      * Operator Overloads
@@ -62,7 +46,7 @@ public:
     Matrix operator*(const Matrix &rhs) const;
     
     // "Regular" scalar multiplication over matrix.
-    Matrix operator*(double scalar);
+    Matrix operator*(double scalar) const;
     
     // Allowing for the scalar multiplication commutative property.
     friend Matrix operator*(double scalar, const Matrix& rhs);
@@ -71,7 +55,7 @@ public:
     Matrix operator+(const Matrix &rhs) const;
     
     // Term by term addition operator for matrix and scalar.
-    Matrix operator+(double scalar);
+    Matrix operator+(double scalar) const;
     
     // Allowing for the scalar addition commutative property.
     friend Matrix operator+(double scalar, const Matrix& rhs);
@@ -80,7 +64,7 @@ public:
     Matrix operator-(const Matrix &rhs)const ;
     
     // Term by term subtraction operator for matrix and scalar.
-    Matrix operator-(double scalar);
+    Matrix operator-(double scalar) const;
     
     // Allowing for the syntax scalar-Matrix
     // as opposed to just having Matrix-scalar
@@ -120,8 +104,7 @@ private:
     
     size_t m_size_;     // (M)xN
     size_t n_size_;     // Mx(N)
-    size_t size_;       // M*N
-    double *matrix_;    // a pointer to the array.
+    std::vector<double> matrix_;
 };
 
 #endif /* MATRIX_HPP_ */

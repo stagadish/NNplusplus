@@ -13,7 +13,6 @@
  *
  * size_t m_size_;     // (M)xN
  * size_t n_size_;     // Mx(N)
- * size_t size_;       // M*N
  * double *matrix_;    // a pointer to the array.
  *
  */
@@ -21,45 +20,12 @@
 
 
 /**********************************************************
- * Constructors, Copy/Move/Assignment operators, Destructor
+ * Constructors
  **********************************************************/
 
-Matrix::Matrix(size_t m, size_t n) : m_size_{m}, n_size_{n}, size_{m * n} {
-    matrix_ = new double[m_size_ * n_size_]();
+Matrix::Matrix(size_t m, size_t n) : m_size_{m}, n_size_{n} {
+    matrix_ = std::vector<double>(m_size_ * n_size_);
 }
-
-Matrix::Matrix(const Matrix &rhs) : m_size_{rhs.m_size_}, n_size_{rhs.n_size_}, size_{rhs.size_} {
-    matrix_ = new double[m_size_ * n_size_]();
-    
-    for (int i = 0; i < size_; ++i) {
-        matrix_[i] = rhs.matrix_[i];
-    }
-}
-
-Matrix& Matrix::operator=(const Matrix &rhs) {
-    if (this != &rhs) {
-        Matrix copy{rhs};
-        std::swap(*this, copy);
-    }
-    return *this;
-}
-
-Matrix::Matrix(Matrix &&rhs) : m_size_{rhs.m_size_}, n_size_{rhs.n_size_}, size_{rhs.size_}, matrix_{rhs.matrix_} {
-    rhs.m_size_ = 0;
-    rhs.n_size_ = 0;
-    rhs.size_ = 0;
-    rhs.matrix_ = nullptr;
-}
-
-Matrix& Matrix::operator=(Matrix &&rhs) {
-    std::swap(m_size_, rhs.m_size_);
-    std::swap(n_size_, rhs.n_size_);
-    std::swap(size_, rhs.size_);
-    std::swap(matrix_, rhs.matrix_);
-    return *this;
-}
-
-Matrix::~Matrix() { delete [] matrix_; }
 
 /**********************************************************
  * Operator Overloads
@@ -103,9 +69,9 @@ Matrix Matrix::operator*(const Matrix &rhs) const {
     return product;
 }
 
-Matrix Matrix::operator*(double scalar) {
+Matrix Matrix::operator*(double scalar) const {
     Matrix tmp{*this};
-    for (int i = 0; i < size_; ++i) {
+    for (int i = 0; i < m_size_*n_size_; ++i) {
         tmp.matrix_[i] *= scalar;
     }
     return tmp;
@@ -125,7 +91,7 @@ Matrix Matrix::operator+(const Matrix &rhs) const {
     return sum;
 }
 
-Matrix Matrix::operator+(double scalar) {
+Matrix Matrix::operator+(double scalar) const {
     Matrix sum(m_size_, n_size_);
     for (size_t i = 0; i < m_size_; ++i) {
         for (size_t j = 0; j < n_size_; ++j) {
@@ -149,7 +115,7 @@ Matrix Matrix::operator-(const Matrix &rhs) const {
     return diff;
 }
 
-Matrix Matrix::operator-(double scalar) {
+Matrix Matrix::operator-(double scalar) const {
     Matrix diff(m_size_, n_size_);
     for (size_t i = 0; i < m_size_; ++i) {
         for (size_t j = 0; j < n_size_; ++j) {

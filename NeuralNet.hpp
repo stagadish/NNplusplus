@@ -23,7 +23,7 @@ class NeuralNet {
 public:
 
     /**********************************************************
-     * Constructors, Copy/Move/Assignment operators, Destructor
+     * Constructors
      **********************************************************/
     
     // Default ctor to initialize a new neural net object.
@@ -36,28 +36,13 @@ public:
     // in the file.
     NeuralNet(const std::string &filename);
     
-    // Copy ctor
-    NeuralNet(const NeuralNet &rhs);
-    
-    // Copy assignment operator
-    NeuralNet& operator=(const NeuralNet &rhs);
-    
-    // Move ctor
-    NeuralNet(NeuralNet &&rhs);
-    
-    // Move assignment operator
-    NeuralNet& operator=(NeuralNet &&rhs);
-    
-    // dealloc weights_ & outputs_ (dtor)
-    ~NeuralNet();
-    
     /**********************************************************
      * Other Functions
      **********************************************************/
     
     // Feed forward the input Matrix and return the
     // net's prediction in a Matrix.
-    Matrix queryNet(const Matrix &inputList) const;
+    Matrix queryNet(const Matrix &inputList);
     
     // A single feed forward and back propagation with weight updates.
     void trainingCycle(const Matrix &inputList, const Matrix &targetOutput);
@@ -75,7 +60,7 @@ private:
     // Initializes the weights (parameters) between the different layers
     // Initial values are being drawn from a normal distribution centered
     // at 0, with standard deviation of (number_of_inputs_to_nodes_in_next_layer)^(-0.5)
-    void initializeNet(Matrix *wMtrx, size_t nextLayer);
+    void initializeNet(Matrix &wMtrx, size_t nextLayer);
     
     // The activation function. Currently using Sigmoid function.
     double activationFunction(double x) const;
@@ -91,8 +76,8 @@ private:
     size_t hiddLayers_;     // Number of hidden layers
     double LR_;             // The learning rate.
     
-    std::vector<Matrix*> weights_;  // The weight matrices
-    std::vector<Matrix*> outputs_;  // Intermediate outputs of all the layers are requierd for training.
+    std::vector<Matrix> weights_;  // The weight matrices
+    std::vector<Matrix> outputs_;  // Intermediate outputs of all the layers are requierd for training.
                                     // this is where they are stored.
 };
 
