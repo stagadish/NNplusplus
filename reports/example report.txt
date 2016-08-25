@@ -1,0 +1,114 @@
+Parsing TRAINING data...
+Number of instances: 100
+Size of inputs: 100 and size of targetOutputs: 100
+Size of inputs matrices: 1,784 and size of targetOutputs matrices: 1,10
+
+
+TRAINING BEGINS!
+	with 10-fold cross validation.
+	START time: 16:11:24 8/23/2016
+
+************ Training k = 1 ************
+START time: 16:11:24 8/23/2016
+Testing k = 1
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 70%
+END time: 16:11:28 8/23/2016
+
+************ Training k = 2 ************
+START time: 16:11:28 8/23/2016
+Testing k = 2
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 80%
+END time: 16:11:33 8/23/2016
+
+************ Training k = 3 ************
+START time: 16:11:33 8/23/2016
+Testing k = 3
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 80%
+END time: 16:11:37 8/23/2016
+
+************ Training k = 4 ************
+START time: 16:11:37 8/23/2016
+Testing k = 4
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 70%
+END time: 16:11:42 8/23/2016
+
+************ Training k = 5 ************
+START time: 16:11:42 8/23/2016
+Testing k = 5
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 70%
+END time: 16:11:46 8/23/2016
+
+************ Training k = 6 ************
+START time: 16:11:46 8/23/2016
+Testing k = 6
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 50%
+END time: 16:11:50 8/23/2016
+
+************ Training k = 7 ************
+START time: 16:11:50 8/23/2016
+Testing k = 7
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 80%
+END time: 16:11:55 8/23/2016
+
+************ Training k = 8 ************
+START time: 16:11:55 8/23/2016
+Testing k = 8
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 60%
+END time: 16:11:59 8/23/2016
+
+************ Training k = 9 ************
+START time: 16:11:59 8/23/2016
+Testing k = 9
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 70%
+END time: 16:12:03 8/23/2016
+
+************ Training k = 10 ************
+START time: 16:12:03 8/23/2016
+Testing k = 10
+	Number of training instances: 90
+	Number of tests: 10
+	Accuracy: 70%
+END time: 16:12:08 8/23/2016
+
+TRAINING ENDED!
+	with 10-fold cross validation.
+	END time: 16:12:08 8/23/2016
+
+	Total num of tests: 100
+	Mean accuracy: 70%
+	95% Confidence Interval: 64.4563% to 75.5437%	[70% ± 5.54372%]
+	***********************************************************
+	* Best performing NN is net No. 2 with accuracy of: 80%
+	***********************************************************
+
+
+
+Parsing TESTING data...
+Number of instances: 10
+Size of inputs: 10 and size of targetOutputs: 10
+Size of inputs matrices: 1,784 and size of targetOutputs matrices: 1,10
+
+
+TESTING BEGINS!
+	Number of successful classifications: 8
+	Number of failed classifications: 2
+	Accuracy: 0.8
+TESTING ENDED!

@@ -1,0 +1,119 @@
+Parsing TRAINING data...
+Number of instances: 60000
+Size of inputs: 60000 and size of targetOutputs: 60000
+Size of inputs matrices: 1,784 and size of targetOutputs matrices: 1,10
+
+
+TRAINING BEGINS!
+	with 10-fold cross validation.
+	START time: 00:12:45 8/24/2016
+
+************ Training k = 1 ************
+START time: 00:12:45 8/24/2016
+Testing k = 1
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 96.1%
+END time: 00:54:46 8/24/2016
+
+************ Training k = 2 ************
+START time: 00:54:46 8/24/2016
+Testing k = 2
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 95.8333%
+END time: 01:36:16 8/24/2016
+
+************ Training k = 3 ************
+START time: 01:36:16 8/24/2016
+Testing k = 3
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 96.1667%
+END time: 02:18:51 8/24/2016
+
+************ Training k = 4 ************
+START time: 02:18:51 8/24/2016
+Testing k = 4
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 95.7667%
+END time: 03:00:35 8/24/2016
+
+************ Training k = 5 ************
+START time: 03:00:35 8/24/2016
+Testing k = 5
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 95.8167%
+END time: 03:42:15 8/24/2016
+
+************ Training k = 6 ************
+START time: 03:42:15 8/24/2016
+Testing k = 6
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 96.3167%
+END time: 04:24:07 8/24/2016
+
+************ Training k = 7 ************
+START time: 04:24:07 8/24/2016
+Testing k = 7
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 95.9833%
+END time: 05:05:49 8/24/2016
+
+************ Training k = 8 ************
+START time: 05:05:49 8/24/2016
+Testing k = 8
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 96.1833%
+END time: 05:47:28 8/24/2016
+
+************ Training k = 9 ************
+START time: 05:47:28 8/24/2016
+Testing k = 9
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 95.8833%
+END time: 06:29:07 8/24/2016
+
+************ Training k = 10 ************
+START time: 06:29:07 8/24/2016
+Testing k = 10
+	Number of training instances: 54000
+	Number of tests: 6000
+	Accuracy: 96.4833%
+END time: 07:11:00 8/24/2016
+
+TRAINING ENDED!
+	with 10-fold cross validation.
+	END time: 07:11:00 8/24/2016
+
+	Total num of tests: 60000
+	Mean accuracy: 96.0533%
+	95% Confidence Interval: 95.9138% to 96.1928%	[96.0533% ± 0.139499%]
+
+	
+
+	======================| Please ignore everything beyond this point |======================
+
+	***********************************************************
+	* Best performing NN is net No. 10 with accuracy of: 96.4833%
+	***********************************************************
+
+
+
+Parsing TESTING data...
+Number of instances: 10000
+Size of inputs: 10000 and size of targetOutputs: 10000
+Size of inputs matrices: 1,784 and size of targetOutputs matrices: 1,10
+
+
+TESTING BEGINS!
+	Number of successful classifications: 9659
+	Number of failed classifications: 341
+	Accuracy: 0.9659
+TESTING ENDED!
