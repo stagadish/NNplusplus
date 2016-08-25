@@ -3,7 +3,6 @@
 //  Neural Net
 //
 //  Created by Gil Dekel on 8/21/16.
-//  Copyright © 2016 Gil Dekel. All rights reserved.
 //  Last edited by Gil Dekel on 8/25/16.
 //
 

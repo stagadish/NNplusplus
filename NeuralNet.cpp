@@ -4,7 +4,6 @@
 //
 //  Created by Gil Dekel on 8/19/16.
 //  Last edited by Gil Dekel on 8/25/16.
-//  Copyright © 2016 Gil Dekel. All rights reserved.
 //
 
 #include <fstream>
@@ -30,9 +29,8 @@
  **********************************************************/
 
 NeuralNet::NeuralNet(size_t inputNodes, size_t hiddenNodes, size_t outputNodes, size_t hiddenLayers, double learningRate )
-    : inNodes_{inputNodes}, hiddNodes_{hiddenNodes}, outNodes_{outputNodes}, hiddLayers_{hiddenLayers}, LR_{learningRate} {
-    weights_ = std::vector<Matrix>(1 + hiddLayers_);       // A vector to store the current weights/parameters
-    outputs_ = std::vector<Matrix>(2 + hiddLayers_);       // A vector to store the last outputs of each layer
+    : inNodes_{inputNodes}, hiddNodes_{hiddenNodes}, outNodes_{outputNodes}, hiddLayers_{hiddenLayers}, LR_{learningRate},
+      weights_{std::vector<Matrix>(1 + hiddenLayers)}, outputs_{std::vector<Matrix>(2 + hiddenLayers)} {
     
     for (int i = 0; i < weights_.size(); ++i) {
         size_t currLayer = 0;
@@ -119,7 +117,7 @@ NeuralNet::NeuralNet(const std::string &filename) {
  **********************************************************/
 
 Matrix NeuralNet::queryNet(const Matrix &inputList) {
-    Matrix finalOutput(std::move(inputList.transpose()));
+    Matrix finalOutput(inputList.transpose());
     outputs_[0] = finalOutput;
     
     for (int i = 0; i < weights_.size(); ++i) {
