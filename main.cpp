@@ -75,12 +75,10 @@ int main(int argc, const char * argv[]) {
         
         std::cout << "************ Training k = " << i+1 << " ************" << "\nSTART time: " << getCurrTime() << std::endl;
         NNs[i] = new NeuralNet(nodes_in, nodes_hidd, nodes_out, num_hidd_layers, LR);
-//        double count = trainingInputs.size();
         
         for (int j = 0; j < shuffledIdxs.size(); ++j) {
             if (j < cvClusters*i || j > cvClusters*i + cvClusters-1) {
                 ++numOfTrainingInstances;
-//                std::cout << (j+1)/count * 100 << "%" << '\r';
                 NNs[i]->trainingCycle(trainingInputs[shuffledIdxs[j]], trainingTargetOutputs[shuffledIdxs[j]]);
             }
         }
@@ -96,7 +94,7 @@ int main(int argc, const char * argv[]) {
                 Matrix result = NNs[i]->queryNet(trainingInputs[shuffledIdxs[j]]);
                 
                 std::pair<size_t, size_t> resultVal = result.getMaxVal();
-                std::pair<size_t, size_t> targetVal = trainingTargetOutputs[shuffledIdxs[j]].transpose().getMaxVal();
+                std::pair<size_t, size_t> targetVal = trainingTargetOutputs[shuffledIdxs[j]].T().getMaxVal();
                 
                 if (resultVal == targetVal) {
                     ++success;
@@ -173,19 +171,7 @@ int main(int argc, const char * argv[]) {
     std::cout << "Number of instances: " << testInputs.size() << std::endl;
     std::cout << "Size of inputs: " << testInputs.size() << " and size of targetOutputs: " << testTargetOutputs.size() << std::endl;
     std::cout << "Size of inputs matrices: " << testInputs[0].getNumOfRows() << "," << testInputs[0].getNumOfCols() << " and size of targetOutputs matrices: " << testTargetOutputs[0].getNumOfRows() << "," << testTargetOutputs[0].getNumOfCols() << std::endl;
-    
-    
-    
-//    std::cout << "Training begins!\n";
-//    NeuralNet NN(784, 393, 10, 1, 0.1);
-//    double count = trainingInputs.size();
-//    for (int i = 0; i < trainingInputs.size(); ++i) {
-//        std::cout << (i+1)/count * 100 << "%" << '\r';
-//        NN.trainingCycle(trainingInputs[i], trainingTargetOutputs[i]);
-//    }
-//    std::cout << "\nTraining Ended!\n\n\n\n";
-//    
-//
+
     
     double numOfTests = testInputs.size();
     double success = 0;
@@ -196,7 +182,7 @@ int main(int argc, const char * argv[]) {
         Matrix result = NNs[idxOfBestNN]->queryNet(testInputs[i]);
         
         std::pair<size_t, size_t> resultVal = result.getMaxVal();
-        std::pair<size_t, size_t> targetVal = testTargetOutputs[i].transpose().getMaxVal();
+        std::pair<size_t, size_t> targetVal = testTargetOutputs[i].T().getMaxVal();
 
         if (resultVal == targetVal) {
             ++success;
@@ -238,7 +224,6 @@ void parseInput(const std::string &fileName, std::vector<Matrix> &inputs, std::v
         newTarget(0,target) = 0.99;
 
         targetOutputs.push_back(std::move(newTarget));
-//        std::cout << "Max value is at: " << result.first << "," << result.second << " and the value is: " << result.second << std::endl << std::endl << std::endl;
 
         Matrix instanceInput(1,784);
         size_t count = 0;

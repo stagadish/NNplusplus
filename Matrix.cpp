@@ -142,7 +142,7 @@ Matrix Matrix::operator-() const {
 size_t Matrix::getNumOfRows() const { return m_size_; }
 size_t Matrix::getNumOfCols() const { return n_size_; }
 
-Matrix Matrix::transpose() const {
+Matrix Matrix::T() const {
     Matrix T(n_size_,m_size_);
     
     for (int i = 0; i < m_size_; ++i) {

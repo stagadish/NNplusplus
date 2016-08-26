@@ -117,7 +117,7 @@ NeuralNet::NeuralNet(const std::string &filename) {
  **********************************************************/
 
 Matrix NeuralNet::queryNet(const Matrix &inputList) {
-    Matrix finalOutput(inputList.transpose());
+    Matrix finalOutput(inputList.T());
     outputs_[0] = finalOutput;
     
     for (int i = 0; i < weights_.size(); ++i) {
@@ -136,15 +136,15 @@ Matrix NeuralNet::queryNet(const Matrix &inputList) {
 
 void NeuralNet::trainingCycle(const Matrix &inputList, const Matrix &targetOutput) {
     Matrix currOutput = queryNet(inputList);                     // Returned transposed
-    Matrix currTargetOut = targetOutput.transpose();
+    Matrix currTargetOut = targetOutput.T();
     Matrix currLayerErrors = currTargetOut-currOutput;            // Calculate the final output layer's error
     
     for (long int i = weights_.size()-1; i >= 0; --i) {
-        Matrix prevLayerErrors = weights_[i].transpose().dot(currLayerErrors);
+        Matrix prevLayerErrors = weights_[i].T().dot(currLayerErrors);
         
         Matrix deltaWeights = currLayerErrors*currOutput;
         deltaWeights = (1-currOutput)*deltaWeights;
-        Matrix prevHiddLayerOutsT = outputs_[i].transpose();
+        Matrix prevHiddLayerOutsT = outputs_[i].T();
         deltaWeights = deltaWeights.dot(prevHiddLayerOutsT);
         deltaWeights = LR_*deltaWeights;
         weights_[i] = weights_[i]+deltaWeights;

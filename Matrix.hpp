@@ -84,7 +84,7 @@ public:
     size_t getNumOfCols() const;
     
     // Transpose the matrix MxN -> NxM
-    Matrix transpose() const;
+    Matrix T() const;
     
     // Get the coordinates of the largest value in the matrix.
     // Will return the coordinates of the earliest larger val.
