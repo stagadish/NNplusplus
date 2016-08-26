@@ -5,7 +5,7 @@
 
 # NN++
 
-A short, self-contained, and easy-to-use deep neural net implementation for C++. It includes the neural net implementation and a Matrix class for basic linear algebra operations. This project is mostly for learning purposes, but preliminary testing results over the MNIST dataset show some promise.
+A short, self-contained, and easy-to-use neural net implementation for C++. It includes the neural net implementation and a Matrix class for basic linear algebra operations. This project is mostly for learning purposes, but preliminary testing results over the MNIST dataset show some promise.
 
 ## Getting Started
 
@@ -149,20 +149,22 @@ New neural nets' weights are initialized with values drawn from a normal distrib
 Once the net is initialized, it is ready to do work.  
 ONE training cycle == one feed forward and one back propagation with weight adjustments.  
   
-To train one cycle, the input data must be parsed into a Matrix object with dimensions: `1xnumber_of_input_nodes` (1x2 in our case), and the target data must be parsed into a Matrix object with dimensions: `1xnumber_of_output_nodes` (1x1).  
+To train one cycle, the input data must be parsed into a Matrix object with dimensions: `1xnumber_of_input_nodes` (1x2 in our case), and the target output must be parsed into a Matrix object with dimensions: `1xnumber_of_output_nodes` (1x1 in our case).  
 ```
 Matrix input(1,2);
 input(0,0) = 0.3;
 input(0,1) = -0.1;
 
-Matrix target(1,1);
+Matrix targetOutput(1,1);
 target(0,0) = 0.5;
 ```
 Then, simply execute the training cycle on the data as follows:
 ```
-NN.trainingCycle(input, target);
+NN.trainingCycle(input, targetOutput);
 ```
-#### A Training Cycle
+Repeate the process over all training instances.
+
+#### Querying the Net
 Once the training phase is complete, you can query it as follows:  
 (Technically speaking, you can query it right after initialization).
 
@@ -187,4 +189,4 @@ See also the list of [contributors](https://github.com/stagadish/NNplusplus/cont
 
 ## License
 
-This project is licensed under the GNU GENERAL PUBLIC LICENSE V3 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU GENERAL PUBLIC LICENSE V3 - see the [LICENSE.md](https://github.com/stagadish/NNplusplus/blob/master/License.md) file for details
