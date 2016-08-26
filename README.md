@@ -20,8 +20,6 @@ Any compiler that can handle C++11.
 #include "NeuralNet.hpp"
 ```
 
-3. Start training your net!
-
 ## Example Code
 ### The Matrix Class
 First you need to know how to use the Matrix class.
@@ -128,10 +126,8 @@ This will result with `mtrx` ==
 ```
 
 ### The NeuralNet Class
-Now that you know how to work with the Matrix class, let's train a neural net!
-
 #### Neural Net Initialization (The Parameters)
-When initialized, a net takes in five parameters:
+When initialized, a net takes in five parameters:  
 1. Number of input nodes.  
 2. Number of nodes per hidden layer.  
 3. Number of output nodes.  
@@ -142,7 +138,7 @@ When initialized, a net takes in five parameters:
 NeuralNet NN(2, 3, 1, 1, 0.1);
 ```
 This neural net has 2 input nodes, 1 hidden layer with 3 nodes, 1 output node, and has a learning rate of 0.1.  
-New neural nets' weights are initialized with values drawn from a normal distribution centered at 0, with standard deviation that is equal to `1/sqrt(number_of_inputs_to_nodes_in_next_layer)`. In other words, relatively small negative and positive values that are proportional to the size of the net.
+New neural nets' weights are initialized with values drawn from a normal distribution centered at 0, with standard deviation that is equal to `1/sqrt(number_of_inputs_to_nodes_in_next_layer)`. In other words, small negative and positive values that are proportional to the size of the net.
 
 #### A Training Cycle
 Once the net is initialized, it is ready to do work.  
@@ -162,17 +158,17 @@ Then, simply execute the training cycle on the data as follows:
 NN.trainingCycle(input, target);
 ```
 #### A Training Cycle
-Once the training phase is complete, you can query it as follows:
+Once the training phase is complete, you can query it as follows:  
 (Technically speaking, you can query it right after initialization).
 
-1. Parse the query into a Matrix like parsed the training instance:
+Parse the query into a Matrix like parsed the training instance:
 ```
 Matrix query(1,2);
 input(0,0) = 0.5;
 input(0,1) = -0.2;
 ```
 
-2. Query the net and catch the result:
+Query the net and catch the result:
 ```
 Matrix prediction = NN.queryNet(query);   // Will return a 1x1 Matrix object with net's prediction
 ```
