@@ -189,4 +189,4 @@ See also the list of [contributors](https://github.com/stagadish/NNplusplus/cont
 
 ## License
 
-This project is licensed under the GNU GENERAL PUBLIC LICENSE V3 - see the [LICENSE.md](https://github.com/stagadish/NNplusplus/blob/master/License.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/stagadish/NNplusplus/blob/master/License.md) file for details
