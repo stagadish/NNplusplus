@@ -1,3 +1,8 @@
+<a>
+    <img src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAIQAAAAJGQ5NGRkNWRjLTE3Y2ItNDgwMC1iZDY2LWJjNGRlYjhlNjhiMQ.png"
+         align="right" />
+</a>
+
 # NN++
 
 A short, self-contained, and easy-to-use deep neural net implementation for C++. It includes the neural net implementation and a Matrix class for basic linear algebra operations. This project is mostly for learning purposes, but preliminary testing results over the MNIST dataset show some promise.
