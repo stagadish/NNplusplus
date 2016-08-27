@@ -60,7 +60,7 @@ private:
     // Initializes the weights (parameters) between the different layers
     // Initial values are being drawn from a normal distribution centered
     // at 0, with standard deviation of (number_of_inputs_to_nodes_in_next_layer)^(-0.5)
-    void initializeNet(Matrix &wMtrx, size_t nextLayer);
+    Matrix initializeMatrix(size_t m, size_t n) const;
     
     // The activation function. Currently using Sigmoid function.
     double activationFunction(double x) const;

@@ -19,8 +19,8 @@
  * size_t hiddLayers_;
  * double LR_;
  *
- * std::vector<Matrix*> weights_;
- * std::vector<Matrix*> outputs_;
+ * std::vector<Matrix> weights_;
+ * std::vector<Matrix> outputs_;
  *
  */
 
@@ -32,7 +32,7 @@ NeuralNet::NeuralNet(size_t inputNodes, size_t hiddenNodes, size_t outputNodes, 
     : inNodes_{inputNodes}, hiddNodes_{hiddenNodes}, outNodes_{outputNodes}, hiddLayers_{hiddenLayers}, LR_{learningRate},
       weights_{std::vector<Matrix>(1 + hiddenLayers)}, outputs_{std::vector<Matrix>(2 + hiddenLayers)} {
     
-    for (int i = 0; i < weights_.size(); ++i) {
+    for (size_t i = 0; i < weights_.size(); ++i) {
         size_t currLayer = 0;
         size_t nextLayer = 0;
         
@@ -47,11 +47,10 @@ NeuralNet::NeuralNet(size_t inputNodes, size_t hiddenNodes, size_t outputNodes, 
             nextLayer = hiddNodes_;
         }
         
-        weights_[i] = Matrix(nextLayer, currLayer);
-        initializeNet(weights_[i], nextLayer);
+        weights_[i] = initializeMatrix(nextLayer, currLayer);
     }
     
-    for (int i = 0; i < outputs_.size(); ++i) {
+    for (size_t i = 0; i < outputs_.size(); ++i) {
         size_t numOfNodes = 0;
         
         if (i == 0) {
@@ -85,19 +84,19 @@ NeuralNet::NeuralNet(const std::string &filename) {
     size_t Mrows = 0, Ncols = 0;
     double nextVal = 0;
     
-    for (int i = 0; i < weights_.size(); ++i) {
+    for (size_t i = 0; i < weights_.size(); ++i) {
         in >> Mrows >> Ncols;
         weights_[i] = Matrix(Mrows, Ncols);
         
-        for (int m = 0; m < Mrows; ++m) {
-            for (int n = 0; n < Ncols; ++n) {
+        for (size_t m = 0; m < Mrows; ++m) {
+            for (size_t n = 0; n < Ncols; ++n) {
                 in >> nextVal;
                 weights_[i](m,n) = nextVal;
             }
         }
     }
     
-    for (int i = 0; i < outputs_.size(); ++i) {
+    for (size_t i = 0; i < outputs_.size(); ++i) {
         size_t numOfNodes = 0;
         
         if (i == 0) {
@@ -117,14 +116,14 @@ NeuralNet::NeuralNet(const std::string &filename) {
  **********************************************************/
 
 Matrix NeuralNet::queryNet(const Matrix &inputList) {
-    Matrix finalOutput(inputList.T());
+    Matrix finalOutput{inputList.T()};
     outputs_[0] = finalOutput;
     
-    for (int i = 0; i < weights_.size(); ++i) {
+    for (size_t i = 0; i < weights_.size(); ++i) {
         finalOutput = weights_[i].dot(finalOutput);
         
-        for (int m = 0; m < finalOutput.getNumOfRows(); ++ m) {
-            for (int n = 0; n < finalOutput.getNumOfCols(); ++n) {
+        for (size_t m = 0; m < finalOutput.getNumOfRows(); ++ m) {
+            for (size_t n = 0; n < finalOutput.getNumOfCols(); ++n) {
                 finalOutput(m,n) = activationFunction(finalOutput(m,n));
             }
         }
@@ -135,16 +134,17 @@ Matrix NeuralNet::queryNet(const Matrix &inputList) {
 }
 
 void NeuralNet::trainingCycle(const Matrix &inputList, const Matrix &targetOutput) {
-    Matrix currOutput = queryNet(inputList);                     // Returned transposed
-    Matrix currTargetOut = targetOutput.T();
-    Matrix currLayerErrors = currTargetOut-currOutput;            // Calculate the final output layer's error
+    Matrix currOutput{queryNet(inputList)};                     // Returned transposed
+    Matrix currTargetOut{targetOutput.T()};
+    Matrix currLayerErrors{currTargetOut-currOutput};            // Calculate the final output layer's error
     
+    // Update the weights going from the output nodes back
     for (long int i = weights_.size()-1; i >= 0; --i) {
-        Matrix prevLayerErrors = weights_[i].T().dot(currLayerErrors);
+        Matrix prevLayerErrors{weights_[i].T().dot(currLayerErrors)};
+        Matrix prevHiddLayerOutsT{outputs_[i].T()};
+        Matrix deltaWeights{currLayerErrors*currOutput};
         
-        Matrix deltaWeights = currLayerErrors*currOutput;
         deltaWeights = (1-currOutput)*deltaWeights;
-        Matrix prevHiddLayerOutsT = outputs_[i].T();
         deltaWeights = deltaWeights.dot(prevHiddLayerOutsT);
         deltaWeights = LR_*deltaWeights;
         weights_[i] = weights_[i]+deltaWeights;
@@ -171,10 +171,10 @@ void NeuralNet::saveNetwork(const std::string &name) const {
     
     out << inNodes_ << " " << hiddNodes_ << " " << outNodes_ << " " << hiddLayers_ << " " << LR_ << std::endl;
     
-    for (int i = 0; i < weights_.size(); ++i) {
+    for (size_t i = 0; i < weights_.size(); ++i) {
         out << weights_[i].getNumOfRows() << " " << weights_[i].getNumOfCols() << std::endl;
-        for (int m = 0; m < weights_[i].getNumOfRows(); ++m) {
-            for (int n = 0; n < weights_[i].getNumOfCols(); ++n) {
+        for (size_t m = 0; m < weights_[i].getNumOfRows(); ++m) {
+            for (size_t n = 0; n < weights_[i].getNumOfCols(); ++n) {
                 out << weights_[i](m,n) << " ";
             }
             out << std::endl;
@@ -190,15 +190,17 @@ void NeuralNet::loadNetwork(const std::string &name) {
  * Private Functions
  **********************************************************/
 
-void NeuralNet::initializeNet(Matrix &wMtrx, size_t nextLayer) {
+Matrix NeuralNet::initializeMatrix(size_t rows, size_t cols) const {
+    Matrix init(rows,cols);
     std::default_random_engine generator((std::random_device()()));
-    std::normal_distribution<double> distribution(0.0, std::pow(nextLayer, -0.5));
+    std::normal_distribution<double> distribution(0.0, std::pow(rows, -0.5));
     
-    for (int m = 0; m < wMtrx.getNumOfRows(); ++m) {
-        for (int n = 0; n < wMtrx.getNumOfCols(); ++n) {
-            wMtrx(m,n) = distribution(generator);
+    for (size_t m = 0; m < rows; ++m) {
+        for (size_t n = 0; n < cols; ++n) {
+            init(m,n) = distribution(generator);
         }
     }
+    return init;
 }
 
 // The activation function. Currently using Sigmoid function.

@@ -23,9 +23,7 @@
  * Constructors
  **********************************************************/
 
-Matrix::Matrix(size_t m, size_t n) : m_size_{m}, n_size_{n} {
-    matrix_ = std::vector<double>(m_size_ * n_size_);
-}
+Matrix::Matrix(size_t m, size_t n) : m_size_{m}, n_size_{n}, matrix_{std::vector<double>(m*n)} { }
 
 /**********************************************************
  * Operator Overloads
@@ -37,42 +35,6 @@ double& Matrix::operator()(size_t row, size_t col) {
 
 const double& Matrix::operator()(size_t row, size_t col) const {
     return matrix_[transformIJ(row, col)];
-}
-
-Matrix Matrix::dot(const Matrix& rhs) const {
-    if (this->n_size_ == rhs.m_size_) {
-        Matrix dproduct(m_size_, rhs.n_size_);
-        
-        for (size_t Arows = 0; Arows < m_size_; ++Arows) {
-            for (size_t Acol = 0; Acol < n_size_; ++Acol) {
-                for (size_t Xcol = 0; Xcol < rhs.n_size_; ++Xcol) {
-                    dproduct.matrix_[dproduct.transformIJ(Arows, Xcol)] +=
-                        matrix_[transformIJ(Arows, Acol)] * rhs.matrix_[rhs.transformIJ(Acol, Xcol)];
-                }
-            }
-        }
-        return dproduct;
-    }
-    return Matrix();
-}
-
-Matrix Matrix::operator*(const Matrix &rhs) const {
-    if (this->m_size_ == rhs.m_size_ && this->n_size_ == rhs.n_size_) {
-        Matrix product{*this};
-        for (size_t i = 0; i < m_size_*n_size_; ++i) {
-            product.matrix_[i] *= rhs.matrix_[i];
-        }
-        return product;
-    }
-    return Matrix();
-}
-
-Matrix Matrix::operator*(double scalar) const {
-    Matrix product{*this};
-    for (size_t i = 0; i < m_size_*n_size_; ++i) {
-        product.matrix_[i] *= scalar;
-    }
-    return product;
 }
 
 Matrix Matrix::operator+(const Matrix &rhs) const {
@@ -121,9 +83,46 @@ Matrix Matrix::operator-() const {
     return neg;
 }
 
+Matrix Matrix::operator*(const Matrix &rhs) const {
+    if (this->m_size_ == rhs.m_size_ && this->n_size_ == rhs.n_size_) {
+        Matrix product{*this};
+        for (size_t i = 0; i < m_size_*n_size_; ++i) {
+            product.matrix_[i] *= rhs.matrix_[i];
+        }
+        return product;
+    }
+    return Matrix();
+}
+
+Matrix Matrix::operator*(double scalar) const {
+    Matrix product{*this};
+    for (size_t i = 0; i < m_size_*n_size_; ++i) {
+        product.matrix_[i] *= scalar;
+    }
+    return product;
+}
+
 /**********************************************************
  * Other Functions
  **********************************************************/
+
+Matrix Matrix::dot(const Matrix& rhs) const {
+    if (this->n_size_ == rhs.m_size_) {
+        Matrix dproduct(m_size_, rhs.n_size_);
+        
+        for (size_t Arows = 0; Arows < m_size_; ++Arows) {
+            for (size_t Acol = 0; Acol < n_size_; ++Acol) {
+                for (size_t Xcol = 0; Xcol < rhs.n_size_; ++Xcol) {
+                    dproduct.matrix_[dproduct.transformIJ(Arows, Xcol)] +=
+                    matrix_[transformIJ(Arows, Acol)] * rhs.matrix_[rhs.transformIJ(Acol, Xcol)];
+                }
+            }
+        }
+        return dproduct;
+    }
+    return Matrix();
+}
+
 
 size_t Matrix::getNumOfRows() const { return m_size_; }
 size_t Matrix::getNumOfCols() const { return n_size_; }

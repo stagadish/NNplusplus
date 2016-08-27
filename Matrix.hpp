@@ -34,22 +34,9 @@ public:
     
     // A substitute to operator[] for a 2D arrays
     double& operator()(size_t row, size_t col);
+    
     const double& operator()(size_t row, size_t col) const;
     
-    // A simple matrix algebra dot product operation.
-    // Return a 0 by 0 matrix if the dimensions do not match.
-    // See operator*(Matrix &rhs) for term by term multiplication.
-    Matrix dot(const Matrix& rhs) const;
-    
-    // "Regular", term by term multiplication operator.
-    // See function dot(Matrix &rhs) for dot product.
-    Matrix operator*(const Matrix &rhs) const;
-    
-    // "Regular" scalar multiplication over matrix.
-    Matrix operator*(double scalar) const;
-    
-    // Allowing for the scalar multiplication commutative property.
-    friend Matrix operator*(double scalar, const Matrix& rhs);
     
     // Term by term addition operator for two matricies.
     Matrix operator+(const Matrix &rhs) const;
@@ -72,10 +59,25 @@ public:
     
     // Unary minus operator for Matrix term by term negation
     Matrix operator-() const;
+    
+    // "Regular", term by term multiplication operator.
+    // See function dot(Matrix &rhs) for dot product.
+    Matrix operator*(const Matrix &rhs) const;
+    
+    // "Regular" scalar multiplication over matrix.
+    Matrix operator*(double scalar) const;
+    
+    // Allowing for the scalar multiplication commutative property.
+    friend Matrix operator*(double scalar, const Matrix& rhs);
  
     /**********************************************************
      * Other Functions
      **********************************************************/
+    
+    // A simple matrix algebra dot product operation.
+    // Return a 0 by 0 matrix if the dimensions do not match.
+    // See operator*(Matrix &rhs) for term by term multiplication.
+    Matrix dot(const Matrix& rhs) const;
     
     // Get number of rows (M)xN
     size_t getNumOfRows() const;

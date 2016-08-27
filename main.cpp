@@ -196,7 +196,7 @@ int main(int argc, const char * argv[]) {
         fails << "\n\tAccuracy: " << success/numOfTests << std::endl;
     std::cout << "TESTING ENDED!\n";
     
-    NNs[idxOfBestNN]->saveNetwork();
+//    NNs[idxOfBestNN]->saveNetwork();
     
     return 0;
 }
