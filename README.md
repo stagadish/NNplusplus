@@ -1,11 +1,11 @@
 <a>
-    <img src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAIQAAAAJGQ5NGRkNWRjLTE3Y2ItNDgwMC1iZDY2LWJjNGRlYjhlNjhiMQ.png"
+    <img src="http://imgur.com/dPoSllF"
          align="right" />
 </a>
 
 # NN++
 
-A short, self-contained, and easy-to-use neural net implementation for C++. It includes the neural net implementation and a Matrix class for basic linear algebra operations. This project is mostly for learning purposes, but preliminary testing results over the MNIST dataset show some promise.
+A short, self-contained, and easy-to-use neural net implementation for C++. It includes the neural net implementation and a Matrix class for *basic* linear algebra operations. This project is mostly for **learning purposes**, but preliminary testing results over the MNIST dataset show some promise.
 
 ## Getting Started
 
@@ -24,7 +24,7 @@ Any compiler that can handle C++11.
 #include "Matrix.hpp"
 #include "NeuralNet.hpp"
 ```
-
+_**NOTE:** It is not required to `#include "Matrix.hpp"` since it is included within `NeuralNet.hpp`. However it is probably better to do so for clarity and safety in case you plan on using Matrix objects in your code (and you probably will if you use NeuralNet)._
 ## Example Code
 ### The Matrix Class
 First you need to know how to use the Matrix class.
@@ -93,8 +93,8 @@ Matrix BB = B.dot(B);     // BB = [ 7  10]
 Matrix BC = B.dot(C);     // BC = [ 5]
                                   [11]
 
-// Mismatching the number of columns in the left-hand-side vector
-// with the number of rows in the right-hand-side vector is illegal
+// Mismatching the number of columns in the left-hand-side matrix
+// with the number of rows in the right-hand-side matrix is illegal
 // An empty matrix object is returned.
 Matrix CB = C.dot(B);     // CB = [];
 ```
@@ -140,23 +140,32 @@ When initialized, a net takes in five parameters:
 5. The learning rate.  
 
 ```
-NeuralNet NN(2, 3, 1, 1, 0.1);
+NeuralNet NN(4, 3, 1, 10, 0.1);
 ```
-This neural net has 2 input nodes, 1 hidden layer with 3 nodes, 1 output node, and has a learning rate of 0.1.  
-New neural nets' weights are initialized with values drawn from a normal distribution centered at 0, with standard deviation that is equal to `1/sqrt(number_of_inputs_to_nodes_in_next_layer)`. In other words, small negative and positive values that are proportional to the size of the net.
+_This_ particular neural net has 4 input nodes, 1 hidden layer with 3 nodes, 10 output node, and has a learning rate of 0.1.  
+New neural nets' weights are initialized with values drawn from a normal distribution centered at 0, with standard deviation that is equal to `1/sqrt(number_of_inputs_to_nodes_in_next_layer)`. In other words, small negative and positive values that are proportional to the size of their previous layer.
 
 #### A Training Cycle
 Once the net is initialized, it is ready to do work.  
-ONE training cycle == one feed forward and one back propagation with weight adjustments.  
+__ONE__ training cycle == one feed forward and one back propagation with weight adjustments.  
   
-To train one cycle, the input data must be parsed into a Matrix object with dimensions: `1xnumber_of_input_nodes` (1x2 in our case), and the target output must be parsed into a Matrix object with dimensions: `1xnumber_of_output_nodes` (1x1 in our case).  
+To train one cycle, the input data must be parsed into a Matrix object with dimensions: `1xnumber_of_input_nodes` (1x4 in our case), and the target output must be parsed into a Matrix object with dimensions: `1xnumber_of_output_nodes` (1x10 in our case).  
 ```
-Matrix input(1,2);
-input(0,0) = 0.3;
+Matrix input(1,4);
+input(0,0) =  0.3;
 input(0,1) = -0.1;
+input(0,2) =  0.2;
+input(0,3) =  0.8;
 
 Matrix targetOutput(1,1);
-target(0,0) = 0.5;
+target(0,0) =  0.5;
+target(0,1) = -0.3;
+        .
+        .
+        .
+target(0,9) =  0.23;        // Obviously, matrices should be populated using
+                            // some parser and not manualy like this.
+
 ```
 Then, simply execute the training cycle on the data as follows:
 ```
@@ -171,15 +180,22 @@ Once the training phase is complete, you can query it as follows:
 Parse the query into a Matrix like parsed the training instance:
 ```
 Matrix query(1,2);
-input(0,0) = 0.5;
+input(0,0) =  0.5;
 input(0,1) = -0.2;
+input(0,2) = -0.3;
+input(0,3) =  0.4;
 ```
 
 Query the net and catch the result:
 ```
-Matrix prediction = NN.queryNet(query);   // Will return a 1x1 Matrix object with net's prediction
+Matrix prediction = NN.queryNet(query);   // Will return a 1x10 Matrix object with net's prediction
 ```
 AND THAT'S IT!
+
+## TODO
+1. Add `array`, `std::vector`, and `std::initializer_list` constructors to the Matrix class
+2. Either improve on or replace my Matrix class for better/faster performance
+3. Add multiple epoch learning with early stopping.
 
 ## Authors
 
