@@ -3,7 +3,7 @@
 //  Neural Net
 //
 //  Created by Gil Dekel on 8/21/16.
-//  Last edited by Gil Dekel on 8/25/16.
+//  Last edited by Gil Dekel on 8/27/16.
 //
 
 #include <iostream>

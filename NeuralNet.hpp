@@ -3,7 +3,7 @@
 //  Neural Net
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/25/16.
+//  Last edited by Gil Dekel on 8/27/16.
 //
 
 #ifndef NEURALNET_HPP_
@@ -34,7 +34,7 @@ public:
     // Expecting a filename with file type *.nn
     // Initializes a new net wit the weights saved
     // in the file.
-    NeuralNet(const std::string &filename);
+    explicit NeuralNet(const std::string &filename);
     
     /**********************************************************
      * Other Functions

@@ -3,7 +3,7 @@
 //  Neural Net
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/25/16.
+//  Last edited by Gil Dekel on 8/27/16.
 //
 
 #include "Matrix.hpp"
@@ -13,7 +13,7 @@
  *
  * size_t m_size_;     // (M)xN
  * size_t n_size_;     // Mx(N)
- * double *matrix_;    // a pointer to the array.
+ * std::vector<double> matrix_;
  *
  */
 
@@ -40,97 +40,83 @@ const double& Matrix::operator()(size_t row, size_t col) const {
 }
 
 Matrix Matrix::dot(const Matrix& rhs) const {
-    Matrix dproduct;
     if (this->n_size_ == rhs.m_size_) {
-        dproduct = Matrix(m_size_, rhs.n_size_);
+        Matrix dproduct(m_size_, rhs.n_size_);
         
         for (size_t Arows = 0; Arows < m_size_; ++Arows) {
             for (size_t Acol = 0; Acol < n_size_; ++Acol) {
                 for (size_t Xcol = 0; Xcol < rhs.n_size_; ++Xcol) {
-                    dproduct(Arows, Xcol) += (*this)(Arows,Acol) * rhs(Acol,Xcol);
+                    dproduct.matrix_[dproduct.transformIJ(Arows, Xcol)] +=
+                        matrix_[transformIJ(Arows, Acol)] * rhs.matrix_[rhs.transformIJ(Acol, Xcol)];
                 }
             }
         }
+        return dproduct;
     }
-    return dproduct;
+    return Matrix();
 }
 
 Matrix Matrix::operator*(const Matrix &rhs) const {
-    Matrix product;
     if (this->m_size_ == rhs.m_size_ && this->n_size_ == rhs.n_size_) {
-        product = Matrix(m_size_, n_size_);
-        
-        for (size_t i = 0; i < m_size_; ++i) {
-            for (size_t j = 0; j < n_size_; ++j) {
-                product(i,j) = (*this)(i,j) * rhs(i,j);
-            }
+        Matrix product{*this};
+        for (size_t i = 0; i < m_size_*n_size_; ++i) {
+            product.matrix_[i] *= rhs.matrix_[i];
         }
+        return product;
+    }
+    return Matrix();
+}
+
+Matrix Matrix::operator*(double scalar) const {
+    Matrix product{*this};
+    for (size_t i = 0; i < m_size_*n_size_; ++i) {
+        product.matrix_[i] *= scalar;
     }
     return product;
 }
 
-Matrix Matrix::operator*(double scalar) const {
-    Matrix tmp{*this};
-    for (int i = 0; i < m_size_*n_size_; ++i) {
-        tmp.matrix_[i] *= scalar;
-    }
-    return tmp;
-}
-
 Matrix Matrix::operator+(const Matrix &rhs) const {
-    Matrix sum;
     if (this->m_size_ == rhs.m_size_ && this->n_size_ == rhs.n_size_) {
-        sum = Matrix(m_size_, n_size_);
-        
-        for (size_t i = 0; i < m_size_; ++i) {
-            for (size_t j = 0; j < n_size_; ++j) {
-                sum(i,j) = (*this)(i,j) + rhs(i,j);
-            }
+        Matrix sum{*this};
+        for (size_t i = 0; i < m_size_*n_size_; ++i) {
+            sum.matrix_[i] += rhs.matrix_[i];
         }
+        return sum;
     }
-    return sum;
+    return Matrix();
 }
 
 Matrix Matrix::operator+(double scalar) const {
-    Matrix sum(m_size_, n_size_);
-    for (size_t i = 0; i < m_size_; ++i) {
-        for (size_t j = 0; j < n_size_; ++j) {
-            sum(i,j) = (*this)(i,j) + scalar;
-        }
+    Matrix sum{*this};
+    for (size_t i = 0; i < m_size_*n_size_; ++i) {
+        sum.matrix_[i] += scalar;
     }
     return sum;
 }
 
 Matrix Matrix::operator-(const Matrix &rhs) const {
-    Matrix diff;
     if (this->m_size_ == rhs.m_size_ && this->n_size_ == rhs.n_size_) {
-        diff = Matrix(m_size_, n_size_);
-        
-        for (size_t i = 0; i < m_size_; ++i) {
-            for (size_t j = 0; j < n_size_; ++j) {
-                diff(i,j) = (*this)(i,j) - rhs(i,j);
-            }
+        Matrix diff{*this};
+        for (size_t i = 0; i < m_size_*n_size_; ++i) {
+            diff.matrix_[i] -= rhs.matrix_[i];
         }
+        return diff;
     }
-    return diff;
+    return Matrix();
 }
 
 Matrix Matrix::operator-(double scalar) const {
-    Matrix diff(m_size_, n_size_);
-    for (size_t i = 0; i < m_size_; ++i) {
-        for (size_t j = 0; j < n_size_; ++j) {
-            diff(i,j) = (*this)(i,j) - scalar;
-        }
+    Matrix diff{*this};
+    for (size_t i = 0; i < m_size_*n_size_; ++i) {
+        diff.matrix_[i] -= scalar;
     }
     return diff;
 }
 
 Matrix Matrix::operator-() const {
-    Matrix neg(m_size_, n_size_);
-    for (size_t i = 0; i < m_size_; ++i) {
-        for (size_t j = 0; j < n_size_; ++j) {
-            neg(i,j) = -(*this)(i,j);
-        }
+    Matrix neg{*this};
+    for (size_t i = 0; i < m_size_*n_size_; ++i) {
+        neg.matrix_[i] = -neg.matrix_[i];
     }
     return neg;
 }
@@ -143,11 +129,10 @@ size_t Matrix::getNumOfRows() const { return m_size_; }
 size_t Matrix::getNumOfCols() const { return n_size_; }
 
 Matrix Matrix::T() const {
-    Matrix T(n_size_,m_size_);
-    
-    for (int i = 0; i < m_size_; ++i) {
-        for (int j = 0; j < n_size_; ++j) {
-            T(j,i) = (*this)(i, j);
+    Matrix T(n_size_, m_size_);
+    for (size_t i = 0; i < m_size_; ++i) {
+        for (size_t j = 0; j < n_size_; ++j) {
+            T.matrix_[T.transformIJ(j, i)] = matrix_[transformIJ(i, j)];
         }
     }
     return T;
@@ -158,23 +143,22 @@ std::pair<size_t, size_t> Matrix::getMaxVal() const {
     long int maxJ = -1;
     double maxVal = -INFINITY;
     
-    for (int i = 0; i < m_size_; ++i) {
-        for (int j = 0; j < n_size_; ++j) {
-            if ((*this)(i,j) >= maxVal) {
-                maxVal = (*this)(i,j);
+    for (size_t i = 0; i < m_size_; ++i) {
+        for (size_t j = 0; j < n_size_; ++j) {
+            if (matrix_[transformIJ(i,j)] >= maxVal) {
+                maxVal = matrix_[transformIJ(i,j)];
                 maxI = i;
                 maxJ = j;
             }
         }
     }
-    
     return std::pair<size_t, size_t>(maxI, maxJ);
 }
 
 void Matrix::printMtrx() const {
-    for (int i = 0; i < m_size_; ++i) {
-        for (int j = 0; j < n_size_; ++j) {
-            std::cout << (*this)(i, j) << "\t\t";
+    for (size_t i = 0; i < m_size_; ++i) {
+        for (size_t j = 0; j < n_size_; ++j) {
+            std::cout << matrix_[transformIJ(i, j)] << "\t\t";
         }
         std::cout << std::endl;
     }
@@ -203,10 +187,8 @@ Matrix operator+(double scalar, const Matrix& rhs) {
 
 Matrix operator-(double scalar, const Matrix& rhs) {
     Matrix sum(rhs.m_size_, rhs.n_size_);
-    for (size_t i = 0; i < rhs.m_size_; ++i) {
-        for (size_t j = 0; j < rhs.n_size_; ++j) {
-            sum(i,j) = scalar - rhs(i,j);
-        }
+    for (size_t i = 0; i < rhs.m_size_ * rhs.n_size_; ++i) {
+        sum.matrix_[i] = scalar - rhs.matrix_[i];
     }
     return sum;
 }
