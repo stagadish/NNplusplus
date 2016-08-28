@@ -61,10 +61,10 @@ Matrix F = B*B        // F = [1   4]
                              [9  16]
                              
 // Mismatching matrix dimensions in term-by-term operations
-// is illegal and therefore an empty matrix object is returned.
-Matrix G = B+C;       // G = []
-Matrix G = B-C;       // G = []
-Matrix G = B*C;       // G = []
+// is illegal and a MatrixDimensionsMismatch exception will be thrown.
+Matrix G = B+C;       // Throws MatrixDimensionsMismatch()
+Matrix G = B-C;       // Throws MatrixDimensionsMismatch()
+Matrix G = B*C;       // Throws MatrixDimensionsMismatch()
 ```
 
 #### Matrix and Scalars
@@ -94,8 +94,8 @@ Matrix BC = B.dot(C);     // BC = [ 5]
 
 // Mismatching the number of columns in the left-hand-side matrix
 // with the number of rows in the right-hand-side matrix is illegal
-// An empty matrix object is returned.
-Matrix CB = C.dot(B);     // CB = [];
+// A MatrixInnderDimensionsMismatch exception will be thrown.
+Matrix CB = C.dot(B);     // Throws MatrixInnderDimensionsMismatch()
 ```
 
 #### Matrix Transpose
