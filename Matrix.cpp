@@ -3,7 +3,7 @@
 //  Neural Net
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/27/16.
+//  Last edited by Gil Dekel on 8/28/16.
 //
 
 #include "Matrix.hpp"
@@ -16,7 +16,6 @@
  * std::vector<double> matrix_;
  *
  */
-
 
 
 /**********************************************************
@@ -37,70 +36,68 @@ const double& Matrix::operator()(size_t row, size_t col) const {
     return matrix_[transformIJ(row, col)];
 }
 
-Matrix Matrix::operator+(const Matrix &rhs) const {
-    if (this->m_size_ == rhs.m_size_ && this->n_size_ == rhs.n_size_) {
-        Matrix sum{*this};
-        for (size_t i = 0; i < m_size_*n_size_; ++i) {
-            sum.matrix_[i] += rhs.matrix_[i];
-        }
-        return sum;
-    }
-    return Matrix();
+
+// ADDITION
+Matrix& Matrix::operator+=(const Matrix & rhs) {
+    std::transform(matrix_.begin(), matrix_.end(), rhs.matrix_.begin(), matrix_.begin(), std::plus<double>());
+    return *this;
 }
 
-Matrix Matrix::operator+(double scalar) const {
-    Matrix sum{*this};
-    for (size_t i = 0; i < m_size_*n_size_; ++i) {
-        sum.matrix_[i] += scalar;
-    }
-    return sum;
+Matrix& Matrix::operator+=(double scalar) {
+    std::transform(matrix_.begin(), matrix_.end(), matrix_.begin(), [scalar](double i){ return i+scalar; });
+    return *this;
 }
 
-Matrix Matrix::operator-(const Matrix &rhs) const {
-    if (this->m_size_ == rhs.m_size_ && this->n_size_ == rhs.n_size_) {
-        Matrix diff{*this};
-        for (size_t i = 0; i < m_size_*n_size_; ++i) {
-            diff.matrix_[i] -= rhs.matrix_[i];
-        }
-        return diff;
-    }
-    return Matrix();
+
+
+// SUBTRACTION
+Matrix& Matrix::operator-=(const Matrix & rhs) {
+    std::transform(matrix_.begin(), matrix_.end(), rhs.matrix_.begin(), matrix_.begin(), std::minus<double>());
+    return *this;
 }
 
-Matrix Matrix::operator-(double scalar) const {
-    Matrix diff{*this};
-    for (size_t i = 0; i < m_size_*n_size_; ++i) {
-        diff.matrix_[i] -= scalar;
-    }
-    return diff;
+Matrix& Matrix::operator-=(double scalar) {
+    std::transform(matrix_.begin(), matrix_.end(), matrix_.begin(), [scalar](double i){ return i-scalar; });
+    return *this;
 }
 
+
+
+// MULTIPLICATION
+Matrix& Matrix::operator*=(const Matrix & rhs) {
+    std::transform(matrix_.begin(), matrix_.end(), rhs.matrix_.begin(), matrix_.begin(), std::multiplies<double>());
+    return *this;
+}
+
+Matrix& Matrix::operator*=(double scalar) {
+    std::transform(matrix_.begin(), matrix_.end(), matrix_.begin(), [scalar](double i){ return i*scalar; });
+    return *this;
+}
+
+
+
+//DIVISION
+Matrix& Matrix::operator/=(const Matrix & rhs) {
+    std::transform(matrix_.begin(), matrix_.end(), rhs.matrix_.begin(), matrix_.begin(), std::divides<double>());
+    return *this;
+}
+
+Matrix& Matrix::operator/=(double scalar) {
+    std::transform(matrix_.begin(), matrix_.end(), matrix_.begin(), [scalar](double i){ return i/scalar; });
+    return *this;
+}
+
+
+
+// UNARY NEGATION
 Matrix Matrix::operator-() const {
     Matrix neg{*this};
-    for (size_t i = 0; i < m_size_*n_size_; ++i) {
-        neg.matrix_[i] = -neg.matrix_[i];
-    }
+    std::transform(neg.matrix_.begin(), neg.matrix_.end(), neg.matrix_.begin(), [](double i){ return -i; });
     return neg;
 }
 
-Matrix Matrix::operator*(const Matrix &rhs) const {
-    if (this->m_size_ == rhs.m_size_ && this->n_size_ == rhs.n_size_) {
-        Matrix product{*this};
-        for (size_t i = 0; i < m_size_*n_size_; ++i) {
-            product.matrix_[i] *= rhs.matrix_[i];
-        }
-        return product;
-    }
-    return Matrix();
-}
 
-Matrix Matrix::operator*(double scalar) const {
-    Matrix product{*this};
-    for (size_t i = 0; i < m_size_*n_size_; ++i) {
-        product.matrix_[i] *= scalar;
-    }
-    return product;
-}
+
 
 /**********************************************************
  * Other Functions
@@ -119,8 +116,8 @@ Matrix Matrix::dot(const Matrix& rhs) const {
             }
         }
         return dproduct;
-    }
-    return Matrix();
+    } else
+        throw MatrixInnderDimensionsMismatch();
 }
 
 
@@ -173,21 +170,78 @@ size_t Matrix::transformIJ(size_t i, size_t j) const {
 }
 
 /**********************************************************
- * Non-member, External Functions
+ * Non-member, Friend Functions
  **********************************************************/
 
-Matrix operator*(double scalar, const Matrix& rhs) {
-    return rhs*scalar;
+// ADDITION
+Matrix operator+(Matrix lhs, const Matrix &rhs) {
+    if (lhs.m_size_ == rhs.m_size_ && lhs.n_size_ == rhs.n_size_) {
+        return lhs += rhs;
+    } else
+        throw MatrixDimensionsMismatch();
 }
 
-Matrix operator+(double scalar, const Matrix& rhs) {
-    return rhs+scalar;
+Matrix operator+(Matrix lhs, double scalar) {
+    return lhs += scalar;
 }
 
-Matrix operator-(double scalar, const Matrix& rhs) {
-    Matrix sum(rhs.m_size_, rhs.n_size_);
-    for (size_t i = 0; i < rhs.m_size_ * rhs.n_size_; ++i) {
-        sum.matrix_[i] = scalar - rhs.matrix_[i];
-    }
-    return sum;
+Matrix operator+(double scalar, Matrix rhs) {
+    return rhs += scalar;
 }
+
+
+
+// SUBTRACTION
+Matrix operator-(Matrix lhs, const Matrix &rhs) {
+    if (lhs.m_size_ == rhs.m_size_ && lhs.n_size_ == rhs.n_size_) {
+        return lhs -= rhs;
+    } else
+        throw MatrixDimensionsMismatch();
+}
+
+Matrix operator-(Matrix lhs, double scalar) {
+    return lhs -= scalar;
+}
+
+Matrix operator-(double scalar, Matrix rhs) {
+    return -rhs += scalar;
+}
+
+
+
+// MULTIPLICATION
+Matrix operator*(Matrix lhs, const Matrix &rhs) {
+    if (lhs.m_size_ == rhs.m_size_ && lhs.n_size_ == rhs.n_size_) {
+        return lhs *= rhs;
+    } else
+        throw MatrixDimensionsMismatch();
+}
+
+Matrix operator*(Matrix lhs, double scalar) {
+    return lhs *= scalar;
+}
+
+Matrix operator*(double scalar, Matrix rhs) {
+    return rhs *= scalar;
+}
+
+
+
+//DIVISION
+Matrix operator/(Matrix lhs, const Matrix &rhs) {
+    if (lhs.m_size_ == rhs.m_size_ && lhs.n_size_ == rhs.n_size_) {
+        return lhs /= rhs;
+    } else
+        throw MatrixDimensionsMismatch();
+}
+
+Matrix operator/(Matrix lhs, double scalar) {
+    return lhs /= scalar;
+}
+
+Matrix operator/(double scalar, Matrix rhs) {
+    std::transform(rhs.matrix_.begin(), rhs.matrix_.end(), rhs.matrix_.begin(), [scalar](double i){ return scalar/i; });
+    return rhs;
+}
+
+

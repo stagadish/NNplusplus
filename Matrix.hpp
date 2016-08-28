@@ -6,7 +6,7 @@
 //  matrix transpose and dot product.
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/27/16.
+//  Last edited by Gil Dekel on 8/28/16.
 //
 
 #ifndef MATRIX_HPP_
@@ -16,6 +16,8 @@
 #include <utility>          // std::swap and std::move
 #include <vector>
 #include <cmath>            // INFINITY
+
+#include "MatrixExceptions.hpp"
 
 class Matrix {
 public:
@@ -28,6 +30,8 @@ public:
     // All matrix positions will be initialized to 0.
     Matrix(size_t m = 0, size_t n = 0);
     
+    
+    
     /**********************************************************
      * Operator Overloads
      **********************************************************/
@@ -38,38 +42,81 @@ public:
     const double& operator()(size_t row, size_t col) const;
     
     
+    
+    // ADDITION
+
+    Matrix& operator+=(const Matrix & rhs);
+    
+    Matrix& operator+=(double scalar);
+    
     // Term by term addition operator for two matricies.
-    Matrix operator+(const Matrix &rhs) const;
+    friend Matrix operator+(Matrix lhs, const Matrix &rhs);
     
     // Term by term addition operator for matrix and scalar.
-    Matrix operator+(double scalar) const;
+    friend Matrix operator+(Matrix lhs, double scalar);
     
     // Allowing for the scalar addition commutative property.
-    friend Matrix operator+(double scalar, const Matrix& rhs);
+    friend Matrix operator+(double scalar, Matrix rhs);
+
+
+    
+    // SUBTRACTION
+    
+    Matrix& operator-=(const Matrix & rhs);
+    
+    Matrix& operator-=(double scalar);
     
     // Term by term subtraction operator for two matricies.
-    Matrix operator-(const Matrix &rhs)const ;
+    friend Matrix operator-(Matrix lhs, const Matrix &rhs);
     
     // Term by term subtraction operator for matrix and scalar.
-    Matrix operator-(double scalar) const;
+    friend Matrix operator-(Matrix lhs, double scalar);
     
-    // Allowing for the syntax scalar-Matrix
-    // as opposed to just having Matrix-scalar
-    friend Matrix operator-(double scalar, const Matrix& rhs);
+    // Term by term subtraction operator for scalar and matrix.
+    friend Matrix operator-(double scalar, Matrix rhs);
     
-    // Unary minus operator for Matrix term by term negation
-    Matrix operator-() const;
+    
+    
+    // MULTIPLICATION
+    
+    Matrix& operator*=(const Matrix & rhs);
+    
+    Matrix& operator*=(double scalar);
     
     // "Regular", term by term multiplication operator.
     // See function dot(Matrix &rhs) for dot product.
-    Matrix operator*(const Matrix &rhs) const;
+    friend Matrix operator*(Matrix lhs, const Matrix &rhs);
     
     // "Regular" scalar multiplication over matrix.
-    Matrix operator*(double scalar) const;
+    friend Matrix operator*(Matrix lhs, double scalar);
     
     // Allowing for the scalar multiplication commutative property.
-    friend Matrix operator*(double scalar, const Matrix& rhs);
+    friend Matrix operator*(double scalar, Matrix rhs);
+    
+    
+    
+    //DIVISION
+    
+    Matrix& operator/=(const Matrix & rhs);
+    
+    Matrix& operator/=(double scalar);
+    
+    // Term by term division operator for two matricies.
+    friend Matrix operator/(Matrix lhs, const Matrix &rhs);
+    
+    // Term by term division operator for matrix and scalar.
+    friend Matrix operator/(Matrix lhs, double scalar);
+    
+    // Term by term division operator for scalar and matrix.
+    friend Matrix operator/(double scalar, Matrix rhs);
+    
+    
+    
+    // Unary minus operator for Matrix term by term negation
+    Matrix operator-() const;
+
  
+    
     /**********************************************************
      * Other Functions
      **********************************************************/

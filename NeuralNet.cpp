@@ -3,7 +3,7 @@
 //  Neural Net
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/27/16.
+//  Last edited by Gil Dekel on 8/28/16.
 //
 
 #include <fstream>
@@ -30,16 +30,22 @@
 
 NeuralNet::NeuralNet(size_t inputNodes, size_t hiddenNodes, size_t outputNodes, size_t hiddenLayers, double learningRate )
     : inNodes_{inputNodes}, hiddNodes_{hiddenNodes}, outNodes_{outputNodes}, hiddLayers_{hiddenLayers}, LR_{learningRate},
-      weights_{std::vector<Matrix>(1 + hiddenLayers)}, outputs_{std::vector<Matrix>(2 + hiddenLayers)} {
+      weights_{std::vector<Matrix>()}, outputs_{std::vector<Matrix>()} {
     
-    for (size_t i = 0; i < weights_.size(); ++i) {
+    size_t weightsSize = 1+hiddLayers_;
+    weights_.reserve(weightsSize);
+          
+    size_t outputsSize = 2+hiddLayers_;
+    outputs_.reserve(outputsSize);
+          
+    for (size_t i = 0; i < weightsSize; ++i) {
         size_t currLayer = 0;
         size_t nextLayer = 0;
         
         if (i == 0) {
             currLayer = inNodes_;
             nextLayer = hiddNodes_;
-        } else if (i == weights_.size()-1) {
+        } else if (i == weightsSize-1) {
             currLayer = hiddNodes_;
             nextLayer = outNodes_;
         } else {
@@ -47,21 +53,21 @@ NeuralNet::NeuralNet(size_t inputNodes, size_t hiddenNodes, size_t outputNodes, 
             nextLayer = hiddNodes_;
         }
         
-        weights_[i] = initializeMatrix(nextLayer, currLayer);
+        weights_.push_back(initializeMatrix(nextLayer, currLayer));
     }
     
-    for (size_t i = 0; i < outputs_.size(); ++i) {
+    for (size_t i = 0; i < outputsSize; ++i) {
         size_t numOfNodes = 0;
         
         if (i == 0) {
             numOfNodes = inNodes_;
-        } else if (i == outputs_.size()-1) {
+        } else if (i == outputsSize-1) {
             numOfNodes = outNodes_;
         } else {
             numOfNodes = hiddNodes_;
         }
         
-        outputs_[i] = Matrix(numOfNodes, 1);
+        outputs_.push_back(Matrix(numOfNodes, 1));
     }
 }
 
@@ -78,36 +84,42 @@ NeuralNet::NeuralNet(const std::string &filename) {
     }
     
     in >> inNodes_ >> hiddNodes_ >> outNodes_ >> hiddLayers_ >> LR_;
-    weights_ = std::vector<Matrix>(1 + hiddLayers_);       // A vector to store the current weights/parameters
-    outputs_ = std::vector<Matrix>(2 + hiddLayers_);       // A vector to store the last outputs of each layer
+    
+    weights_ = std::vector<Matrix>();
+    size_t weightsSize = 1+hiddLayers_;
+    weights_.reserve(weightsSize);
+    
+    outputs_ = std::vector<Matrix>();
+    size_t outputsSize = 2+hiddLayers_;
+    outputs_.reserve(outputsSize);
     
     size_t Mrows = 0, Ncols = 0;
     double nextVal = 0;
     
-    for (size_t i = 0; i < weights_.size(); ++i) {
+    for (size_t i = 0; i < weightsSize; ++i) {
         in >> Mrows >> Ncols;
-        weights_[i] = Matrix(Mrows, Ncols);
+        weights_.push_back(Matrix(Mrows, Ncols));
         
         for (size_t m = 0; m < Mrows; ++m) {
             for (size_t n = 0; n < Ncols; ++n) {
                 in >> nextVal;
-                weights_[i](m,n) = nextVal;
+                weights_.back()(m,n) = nextVal;
             }
         }
     }
     
-    for (size_t i = 0; i < outputs_.size(); ++i) {
+    for (size_t i = 0; i < outputsSize; ++i) {
         size_t numOfNodes = 0;
         
         if (i == 0) {
             numOfNodes = inNodes_;
-        } else if (i == outputs_.size()-1) {
+        } else if (i == outputsSize-1) {
             numOfNodes = outNodes_;
         } else {
             numOfNodes = hiddNodes_;
         }
         
-        outputs_[i] = Matrix(numOfNodes, 1);
+        outputs_.push_back(Matrix(numOfNodes, 1));
     }
 }
 
@@ -142,13 +154,12 @@ void NeuralNet::trainingCycle(const Matrix &inputList, const Matrix &targetOutpu
     for (long int i = weights_.size()-1; i >= 0; --i) {
         Matrix prevLayerErrors{weights_[i].T().dot(currLayerErrors)};
         Matrix prevHiddLayerOutsT{outputs_[i].T()};
+        
         Matrix deltaWeights{currLayerErrors*currOutput};
-        
-        deltaWeights = (1-currOutput)*deltaWeights;
+        deltaWeights *= (1-currOutput);
         deltaWeights = deltaWeights.dot(prevHiddLayerOutsT);
-        deltaWeights = LR_*deltaWeights;
-        weights_[i] = weights_[i]+deltaWeights;
-        
+        deltaWeights *= LR_;
+        weights_[i] += deltaWeights;
         
         currLayerErrors = prevLayerErrors;
         currOutput = outputs_[i];
