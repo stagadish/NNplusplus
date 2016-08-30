@@ -3,7 +3,7 @@
 //  Neural Net
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/28/16.
+//  Last edited by Gil Dekel on 8/30/16.
 //
 
 #ifndef NEURALNET_HPP_

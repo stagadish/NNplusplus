@@ -6,7 +6,7 @@
 //  matrix transpose and dot product.
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/28/16.
+//  Last edited by Gil Dekel on 8/30/16.
 //
 
 #ifndef MATRIX_HPP_
@@ -30,7 +30,20 @@ public:
     // All matrix positions will be initialized to 0.
     Matrix(size_t m = 0, size_t n = 0);
     
-    
+    // COPY ctor
+    Matrix(const Matrix &rhs);
+
+    // Copy assignment operator
+    Matrix& operator=(const Matrix &rhs);
+
+    // MOVE ctor
+    Matrix(Matrix &&rhs);
+
+    // Move assignment operator
+    Matrix& operator=(Matrix &&rhs);
+
+    // dealloc matrix_ (dtor)
+    ~Matrix();
     
     /**********************************************************
      * Operator Overloads
@@ -144,16 +157,12 @@ public:
     
 private:
     
-    // Private member matrix_ is a pointer to a contiguous,
-    // horizontal array of size 1x(M*N).
-    // This function takes two indicies i & j and convert them
-    // into the corresponding single index in matrix_
-    // Invoked each time operator(i,j) is used to access elements.
-    size_t transformIJ(size_t i, size_t j) const;
-    
     size_t m_size_;     // (M)xN
     size_t n_size_;     // Mx(N)
-    std::vector<double> matrix_;
+    double *matrix_;    // A pointer to the array.
+    double **rowPtrs_;   // An array of row pointers.
+                        // used to avoid repeated arithmetics
+                        // at each access to the matrix.
 };
 
 #endif /* MATRIX_HPP_ */
