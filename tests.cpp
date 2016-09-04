@@ -5,7 +5,7 @@
 //  A bunch of tests for Matrix.hpp & NeuralNet.hpp
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/30/16.
+//  Last edited by Gil Dekel on 9/4/16.
 //
 
 #include <iostream>
@@ -218,7 +218,7 @@ int main(int argc, const char * argv[]) {
     
     std::vector<Matrix> testInputs;
     std::vector<Matrix> testTargetOutputs;
-    parseInput("data/test_data/mnist_test.txt", testInputs, testTargetOutputs);
+    parseInput("data/training_data/mnist_train_100.txt", testInputs, testTargetOutputs);
     std::cout << "Number of instances: " << testInputs.size() << std::endl;
     std::cout << "Size of inputs: " << testInputs.size() << " and size of targetOutputs: " << testTargetOutputs.size() << std::endl;
     std::cout << "Size of inputs matrices: " << testInputs[0].getNumOfRows() << "," << testInputs[0].getNumOfCols() << " and size of targetOutputs matrices: " << testTargetOutputs[0].getNumOfRows() << "," << testTargetOutputs[0].getNumOfCols() << std::endl;
