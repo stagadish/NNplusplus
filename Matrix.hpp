@@ -128,6 +128,9 @@ public:
     // Unary minus operator for Matrix term by term negation
     Matrix operator-() const;
 
+
+    // Print matrix
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& rhs);
  
     
     /**********************************************************

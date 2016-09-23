@@ -68,7 +68,9 @@ private:
     // A utility function to get the current time in a string.
     // Used to name neural nets when saved.
     std::string getCurrTime() const;
-    
+
+    // Prints the weights of the Net
+    friend std::ostream& operator<<(std::ostream& os, const NeuralNet& rhs);
     
     size_t inNodes_;        // Number of input nodes
     size_t hiddNodes_;      // Number of nodes per hidden layer

@@ -178,7 +178,22 @@ Matrix Matrix::operator-() const {
     return neg;
 }
 
-
+// PRINT MATRIX
+std::ostream& operator<<(std::ostream& os, const Matrix& rhs) {
+    os << "[";
+    for (auto i = 0U; i < rhs.getNumOfRows(); ++i) {
+        os << "[";
+        for (auto j = 0U; j < rhs.getNumOfCols(); ++j) {
+            if(j != 0) {
+                os << ", ";
+            }
+            os << rhs(i, j);
+        }
+        os << "]";
+    }
+    os << "]";
+    return os;
+}
 
 
 /**********************************************************

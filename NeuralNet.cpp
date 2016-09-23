@@ -229,3 +229,11 @@ std::string NeuralNet::getCurrTime() const {
     
     return currTime;
 }
+
+
+std::ostream& operator<<(std::ostream& os, const NeuralNet& rhs){
+    for(auto layer : rhs.weights_) {
+        os << layer;
+    }
+    return os;
+}
