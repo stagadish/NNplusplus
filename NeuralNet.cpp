@@ -166,6 +166,15 @@ void NeuralNet::trainingCycle(const Matrix &inputList, const Matrix &targetOutpu
     }
 }
 
+void NeuralNet::trainAll(const std::vector<std::pair<Matrix, Matrix> > &training, bool (*eval)(NeuralNet &, const std::vector<std::pair<Matrix, Matrix>> &, const int)){
+    unsigned int iterations = 0U;
+    while(eval(*this, training, iterations++)) {
+        for(auto test : training) {
+            trainingCycle(test.first, test.second);
+        }
+    }
+}
+
 void NeuralNet::saveNetwork(const std::string &name) const {
     std::string fileName;
     

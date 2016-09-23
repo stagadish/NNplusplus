@@ -46,6 +46,9 @@ public:
     
     // A single feed forward and back propagation with weight updates.
     void trainingCycle(const Matrix &inputList, const Matrix &targetOutput);
+
+    // Train on a vector of input, output cases
+    void trainAll(const std::vector<std::pair<Matrix, Matrix> > &training, bool (*eval)(NeuralNet &, const std::vector<std::pair<Matrix, Matrix>> &, const int));
     
     // A method to save the current state of the net.
     // Files are saved as *.nn.
