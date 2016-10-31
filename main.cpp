@@ -22,7 +22,7 @@ void parseInput(const std::string &fileName, std::vector<Matrix> &inputs, std::v
 std::string getCurrTime();
 int myrandom(int i) { return std::rand()%i;}
 
-int main(int argc, const char * argv[]) {
+int main(int /*argc*/, const char * /*argv*/[]) {
     std::srand(unsigned(std::time(0)));
 
     //***********
@@ -53,7 +53,7 @@ int main(int argc, const char * argv[]) {
 
     // Get a vector of shuffled indices. Effectively shuffling the data.
     std::vector<int> shuffledIdxs(trainingInputs.size());
-    for (int i = 0; i < shuffledIdxs.size(); ++i) {
+    for (unsigned int i = 0; i < shuffledIdxs.size(); ++i) {
         shuffledIdxs[i] = i;
     }
     std::random_shuffle(shuffledIdxs.begin(), shuffledIdxs.end(), myrandom);
@@ -76,7 +76,7 @@ int main(int argc, const char * argv[]) {
         std::cout << "************ Training k = " << i+1 << " ************" << "\nSTART time: " << getCurrTime() << std::endl;
         NNs[i] = new NeuralNet(nodes_in, nodes_hidd, nodes_out, num_hidd_layers, LR);
 
-        for (int j = 0; j < shuffledIdxs.size(); ++j) {
+        for (unsigned int j = 0; j < shuffledIdxs.size(); ++j) {
             if (j < cvClusters*i || j > cvClusters*i + cvClusters-1) {
                 ++numOfTrainingInstances;
                 NNs[i]->trainingCycle(trainingInputs[shuffledIdxs[j]], trainingTargetOutputs[shuffledIdxs[j]]);
@@ -88,7 +88,7 @@ int main(int argc, const char * argv[]) {
         double fails = 0;
 
         std::cout << "Testing k = " << i+1 << std::endl;
-        for (int j = 0; j < shuffledIdxs.size(); ++j) {
+        for (unsigned int j = 0; j < shuffledIdxs.size(); ++j) {
             if (j >= cvClusters*i && j <= cvClusters*i + cvClusters-1) {
                 ++numOfTests;
                 Matrix result = NNs[i]->queryNet(trainingInputs[shuffledIdxs[j]]);
@@ -116,13 +116,13 @@ int main(int argc, const char * argv[]) {
 
     // Find the Mean and standard deviation of the accuracies
     double mean_accu = 0;
-    for (int k = 0; k < accuracies.size(); ++k) {
+    for (unsigned int k = 0; k < accuracies.size(); ++k) {
         mean_accu += accuracies[k];
     }
     mean_accu = mean_accu/accuracies.size();
 
     double standard_deviation = 0;
-    for (int i = 0; i < accuracies.size(); ++i) {
+    for (unsigned int i = 0; i < accuracies.size(); ++i) {
         standard_deviation += pow((accuracies[i]-mean_accu),2);
     }
     standard_deviation = sqrt(standard_deviation/accuracies.size());
@@ -137,7 +137,7 @@ int main(int argc, const char * argv[]) {
     // Find the best performing Net
     double maxAccuVal = 0;
     int idxOfBestNN = -1;
-    for (int k = 0; k < accuracies.size(); ++k) {
+    for (unsigned int k = 0; k < accuracies.size(); ++k) {
         if (maxAccuVal < accuracies[k]) {
             maxAccuVal = accuracies[k];
             idxOfBestNN = k;
@@ -178,7 +178,7 @@ int main(int argc, const char * argv[]) {
     double fails = 0;
 
     std::cout << "\n\nTESTING BEGINS!" << std::endl;
-    for (int i = 0; i < testInputs.size(); ++i) {
+    for (unsigned int i = 0; i < testInputs.size(); ++i) {
         Matrix result = NNs[idxOfBestNN]->queryNet(testInputs[i]);
 
         std::pair<size_t, size_t> resultVal = result.getMaxVal();
@@ -216,8 +216,8 @@ void parseInput(const std::string &fileName, std::vector<Matrix> &inputs, std::v
 
         ss >> target;
         Matrix newTarget(1,10);
-        for (int m = 0; m < newTarget.getNumOfRows(); ++m) {
-            for (int n = 0; n < newTarget.getNumOfCols(); ++n) {
+        for (unsigned int m = 0; m < newTarget.getNumOfRows(); ++m) {
+            for (unsigned int n = 0; n < newTarget.getNumOfCols(); ++n) {
                 newTarget(m,n) = 0.01;
             }
         }

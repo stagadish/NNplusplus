@@ -38,7 +38,7 @@ Matrix::Matrix(const Matrix &rhs) : m_size_{rhs.m_size_}, n_size_{rhs.n_size_} {
     matrix_ = new double[m_size_ * n_size_]();
     rowPtrs_ = new double*[m_size_];
 
-    for (int i = 0; i < m_size_ * n_size_; ++i) {
+    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
         matrix_[i] = rhs.matrix_[i];
     }
 

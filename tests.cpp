@@ -38,8 +38,8 @@ void parseInput(const std::string &fileName, std::vector<Matrix> &inputs, std::v
 
         ss >> target;
         Matrix newTarget(1,10);
-        for (int m = 0; m < newTarget.getNumOfRows(); ++m) {
-            for (int n = 0; n < newTarget.getNumOfCols(); ++n) {
+        for (unsigned int m = 0; m < newTarget.getNumOfRows(); ++m) {
+            for (unsigned int n = 0; n < newTarget.getNumOfCols(); ++n) {
                 newTarget(m,n) = 0.01;
             }
         }
@@ -70,7 +70,7 @@ std::string getCurrTime() {
     return currTime;
 }
 
-int main(int argc, const char * argv[]) {
+int main(int /*argc*/, const char * /*argv*/[]) {
 // ****************************************************************************************************************
 //                                                Matrix Class Tests
 // ****************************************************************************************************************
@@ -230,7 +230,7 @@ int main(int argc, const char * argv[]) {
 
     std::cout << "\n\nTESTING BEGINS!" << std::endl;
     auto t_start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < testInputs.size(); ++i) {
+    for (unsigned int i = 0; i < testInputs.size(); ++i) {
         Matrix result = NN.queryNet(testInputs[i]);
 
         std::pair<size_t, size_t> resultVal = result.getMaxVal();
@@ -260,7 +260,7 @@ int main(int argc, const char * argv[]) {
 
     std::cout << "\n\nTESTING BEGINS!" << std::endl;
     t_start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < testInputs.size(); ++i) {
+    for (unsigned int i = 0; i < testInputs.size(); ++i) {
         Matrix result = NN.queryNet(testInputs[i]);
 
         std::pair<size_t, size_t> resultVal = result.getMaxVal();
