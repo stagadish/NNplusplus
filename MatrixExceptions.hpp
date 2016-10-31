@@ -3,7 +3,7 @@
 //  Neural Net
 //
 //  Created by Gil Dekel on 8/28/16.
-//  Last edited by Gil Dekel on 8/28/16.
+//  Last edited by Joshua Pratt on 10/01/16.
 //
 
 #ifndef MATRIX_EXCEPTIONS_HPP

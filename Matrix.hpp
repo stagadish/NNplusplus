@@ -6,7 +6,7 @@
 //  matrix transpose and dot product.
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 8/30/16.
+//  Last edited by Joshua Pratt on 10/01/16.
 //
 
 #ifndef MATRIX_HPP_

@@ -5,7 +5,7 @@
 //  A bunch of tests for Matrix.hpp & NeuralNet.hpp
 //
 //  Created by Gil Dekel on 8/19/16.
-//  Last edited by Gil Dekel on 9/4/16.
+//  Last edited by Joshua Pratt on 10/01/16.
 //
 
 #include <iostream>
