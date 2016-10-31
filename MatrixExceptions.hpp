@@ -9,11 +9,13 @@
 #ifndef MATRIX_EXCEPTIONS_HPP
 #define MATRIX_EXCEPTIONS_HPP
 
+#include <exception>
+
 class MatrixDimensionsMismatch : public std::exception {
     const char* what() const noexcept {return "Matrix dimensions must agree.\n";}
 };
 
-class MatrixInnderDimensionsMismatch : public std::exception  {
+class MatrixInnerDimensionsMismatch : public std::exception  {
     const char* what() const noexcept {return "Matrix inner dimensions must agree.\n";}
 };
 

@@ -30,6 +30,19 @@ public:
     // All matrix positions will be initialized to 0.
     Matrix(size_t m = 0, size_t n = 0);
 
+    // Iterator ctor
+    template<typename IT>
+    Matrix(IT begin, IT end, size_t m, size_t n): Matrix(m, n) {
+        if(m*n != std::distance(begin, end)) {
+            throw MatrixDimensionsMismatch();
+        }
+        std::copy(begin, end, matrix_);
+    }
+
+    // Initializer list ctor
+    template<typename T>
+    Matrix(std::initializer_list<T> list): Matrix(list.begin(), list.end(), 1, std::distance(list.begin(), list.end())) {}
+
     // COPY ctor
     Matrix(const Matrix &rhs);
 

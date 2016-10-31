@@ -216,7 +216,7 @@ Matrix Matrix::dot(const Matrix& rhs) const {
         }
         return dproduct;
     } else
-        throw MatrixInnderDimensionsMismatch();
+        throw MatrixInnerDimensionsMismatch();
 }
 
 size_t Matrix::getNumOfRows() const { return m_size_; }
