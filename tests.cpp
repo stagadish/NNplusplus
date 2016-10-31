@@ -56,7 +56,7 @@ void parseInput(const std::string &fileName, std::vector<Matrix> &inputs, std::v
         }
         inputs.push_back(std::move(instanceInput));
     }
-        
+
 }
 
 std::string getCurrTime() {
@@ -74,7 +74,7 @@ int main(int argc, const char * argv[]) {
 // ****************************************************************************************************************
 //                                                Matrix Class Tests
 // ****************************************************************************************************************
-//    
+//
 //    size_t m = 1000;
 //    size_t n = 1000;
 //
@@ -99,35 +99,35 @@ int main(int argc, const char * argv[]) {
 //    std::cout << "Transpose mrtxB\n";
 //    Matrix B_T = mtrxB.T();
 //    B_T.printMtrx();
-    
+
 //
 //    std::cout << "mtrx+B_T:\n";
 //    (mtrx+B_T).printMtrx();
 //
 //    std::cout << "B_T+mtrx:\n";
 //    (B_T+mtrx).printMtrx();
-//    
+//
 //    std::cout << "mtrx += 10\n";
 //    (mtrx += 10).printMtrx();
-//    
+//
 //    std::cout << "mtrx += B_T:\n";
 //    (mtrx += B_T).printMtrx();
-//    
+//
 //    std::cout << "mtrx:\n";
 //    mtrx.printMtrx();
 //
 //    std::cout << "mtrx-B_T:\n";
 //    (mtrx-B_T).printMtrx();
-//    
+//
 //    std::cout << "B_T-mtrx:\n";
 //    (B_T-mtrx).printMtrx();
-//    
+//
 //    std::cout << "mtrx -= 10\n";
 //    (mtrx -= 10).printMtrx();
-//    
+//
 //    std::cout << "mtrx -= B_T:\n";
 //    (mtrx -= B_T).printMtrx();
-//    
+//
 //    std::cout << "mtrx:\n";
 //    mtrx.printMtrx();
 //
@@ -157,36 +157,36 @@ int main(int argc, const char * argv[]) {
 //
 //    std::cout << "mtrx*2:\n";
 //    (mtrx*2).printMtrx();
-//    
+//
 //    std::cout << "2*mtrx:\n";
 //    (2*mtrx).printMtrx();
-//    
+//
 //    std::cout << "mtrx/B_T:\n";
 //    (mtrx/B_T).printMtrx();
-//    
+//
 //    std::cout << "B_T/mtrx:\n";
 //    (B_T/mtrx).printMtrx();
-//    
+//
 //    std::cout << "mtrx/2:\n";
 //    (mtrx/2).printMtrx();
-//    
+//
 //    std::cout << "2/mtrx:\n";
 //    (2/mtrx).printMtrx();
-//    
+//
 //    std::cout << "mtrx/=2:\n";
 //    (mtrx/=2).printMtrx();
 //
 //    std::cout << "mtrx*=2:\n";
 //    (mtrx*=2).printMtrx();
-//    
+//
 //    std::cout << "mtrx*=2:\n";
 //    (mtrx*=2).printMtrx();
 //
-//    
+//
 //    std::cout << "neg = -mtrx:\n";
 //    Matrix neg{-mtrx};
 //    neg.printMtrx();
-//    
+//
 //    std::cout << "-neg:\n";
 //    (-neg).printMtrx();
 //
@@ -208,77 +208,77 @@ int main(int argc, const char * argv[]) {
 //
 //    throw MatrixDimensionsMismatch();
 //    throw MatrixInnderDimensionsMismatch();
-    
+
 // ****************************************************************************************************************
 //                                            NeuralNet Class Tests
 // ****************************************************************************************************************
     NeuralNet NN(784, 397, 10, 1, 0.1);
-    
+
     std::cout << "Parsing TESTING data...\n";
-    
+
     std::vector<Matrix> testInputs;
     std::vector<Matrix> testTargetOutputs;
     parseInput("data/training_data/mnist_train_100.txt", testInputs, testTargetOutputs);
     std::cout << "Number of instances: " << testInputs.size() << std::endl;
     std::cout << "Size of inputs: " << testInputs.size() << " and size of targetOutputs: " << testTargetOutputs.size() << std::endl;
     std::cout << "Size of inputs matrices: " << testInputs[0].getNumOfRows() << "," << testInputs[0].getNumOfCols() << " and size of targetOutputs matrices: " << testTargetOutputs[0].getNumOfRows() << "," << testTargetOutputs[0].getNumOfCols() << std::endl;
-    
-    
+
+
     double numOfTests = testInputs.size();
     double success = 0;
     double fails = 0;
-    
+
     std::cout << "\n\nTESTING BEGINS!" << std::endl;
     auto t_start = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < testInputs.size(); ++i) {
         Matrix result = NN.queryNet(testInputs[i]);
-        
+
         std::pair<size_t, size_t> resultVal = result.getMaxVal();
         std::pair<size_t, size_t> targetVal = testTargetOutputs[i].T().getMaxVal();
-        
+
         if (resultVal == targetVal) {
             ++success;
         } else {
             ++fails;
         }
-        
+
     }
     auto t_end = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-    
+
     std::cout << "\tNumber of successful classifications: " << success << "\n\tNumber of failed classifications: " <<
     fails << "\n\tAccuracy: " << success/numOfTests << std::endl;
     std::cout << "TESTING ENDED!\nEND time: " << end/1000 << "s" << std::endl;
 
     NN.loadNetwork("saved_nets/2016-8-24--07-12-33.nn");
-    
+
     std::cout << "Parsing TESTING data...\n";
-    
+
     numOfTests = testInputs.size();
     success = 0;
     fails = 0;
-    
+
     std::cout << "\n\nTESTING BEGINS!" << std::endl;
     t_start = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < testInputs.size(); ++i) {
         Matrix result = NN.queryNet(testInputs[i]);
-        
+
         std::pair<size_t, size_t> resultVal = result.getMaxVal();
         std::pair<size_t, size_t> targetVal = testTargetOutputs[i].T().getMaxVal();
-        
+
         if (resultVal == targetVal) {
             ++success;
         } else {
             ++fails;
         }
-        
+
     }
     t_end = std::chrono::high_resolution_clock::now();
     end = std::chrono::duration<double, std::milli>(t_end-t_start).count();
-    
+
     std::cout << "\tNumber of successful classifications: " << success << "\n\tNumber of failed classifications: " <<
     fails << "\n\tAccuracy: " << success/numOfTests << std::endl;
     std::cout << "TESTING ENDED!\nEND time: " << end/1000 << "s" << std::endl;
-    
+
     return 0;
 }
