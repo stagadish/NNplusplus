@@ -170,7 +170,7 @@ Then, simply execute the training cycle on the data as follows:
 ```
 NN.trainingCycle(input, targetOutput);
 ```
-Repeate the process over all training instances.
+Repeat the process over all training instances.
 
 #### Querying the Net
 Once the training phase is complete, you can query it as follows:
@@ -185,6 +185,11 @@ input(0,2) = -0.3;
 input(0,3) =  0.4;
 ```
 
+Alternatively Initializer lists can also be used:
+```
+Matrix query{0.5, -0.2, -0.3, 0.4};
+```
+
 Query the net and catch the result:
 ```
 Matrix prediction = NN.queryNet(query);   // Will return a 1x10 Matrix object with net's prediction
@@ -193,7 +198,7 @@ AND THAT'S IT!
 
 ## TODO
 1. Either improve on or replace my Matrix class for better/faster performance
-2. Give better error information (i.e. the size of the Matrixes in MatrixDimensionsMismatch etc)
+2. Give better error information (i.e. the size of the Matrices in MatrixDimensionsMismatch etc.)
 
 ## Authors
 
