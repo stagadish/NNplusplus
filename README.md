@@ -52,14 +52,14 @@ C(0,0) = 1; C(1,0) = 2;                           // [1]
 // Commutative property is supported for addition
 Matrix D = B+B;       // D = [2   4]
                              [6   8]
-                             
+
 Matrix E = B-B;       // E = [0   0]
                              [0   0]
-                             
-// Commutative property is supported for multiplication                             
+
+// Commutative property is supported for multiplication
 Matrix F = B*B        // F = [1   4]
                              [9  16]
-                             
+
 // Mismatching matrix dimensions in term-by-term operations
 // is illegal and a MatrixDimensionsMismatch exception will be thrown.
 Matrix G = B+C;       // Throws MatrixDimensionsMismatch()
@@ -75,10 +75,10 @@ Matrix BplusTwo = B+2;  // (== 2+B)   BplusTwo = [3   4]
 
 Matrix CminusTwo = C-2; //           CminusTwo = [-1]
                                                  [ 0]
-                                                 
+
 Matrix TwominusB = 2-C; //           TwominusB = [ 1]
                                                  [ 0]
-                                                 
+
 // Commutative property is supported for multiplication
 Matrix BtimesThree = B*3; // (== 3*B) BtimesThree = [3    6]
                                                     [9   12]
@@ -88,7 +88,7 @@ Matrix BtimesThree = B*3; // (== 3*B) BtimesThree = [3    6]
 ```
 Matrix BB = B.dot(B);     // BB = [ 7  10]
                                   [15  22]
-                                  
+
 Matrix BC = B.dot(C);     // BC = [ 5]
                                   [11]
 
@@ -102,7 +102,7 @@ Matrix CB = C.dot(B);     // Throws MatrixInnderDimensionsMismatch()
 ```
 Matrix B_T = B.T();   // B_T = [1   3]
                                [2   4]
-                                 
+
 Matrix C_T = C.T();   // C_T = [1   2]
 ```
 
@@ -131,24 +131,24 @@ This will result with `mtrx` ==
 
 ### The NeuralNet Class
 #### Neural Net Initialization (The Parameters)
-When initialized, a net takes in five parameters:  
-1. Number of input nodes.  
-2. Number of nodes per hidden layer.  
-3. Number of output nodes.  
-4. Number of hidden layers.  
-5. The learning rate.  
+When initialized, a net takes in five parameters:
+1. Number of input nodes.
+2. Number of nodes per hidden layer.
+3. Number of output nodes.
+4. Number of hidden layers.
+5. The learning rate.
 
 ```
 NeuralNet NN(4, 3, 1, 10, 0.1);
 ```
-_This_ particular neural net has 4 input nodes, 1 hidden layer with 3 nodes, 10 output node, and has a learning rate of 0.1.  
+_This_ particular neural net has 4 input nodes, 1 hidden layer with 3 nodes, 10 output node, and has a learning rate of 0.1.
 New neural nets' weights are initialized with values drawn from a normal distribution centered at 0, with standard deviation that is equal to `1/sqrt(number_of_inputs_to_nodes_in_next_layer)`. In other words, small negative and positive values that are proportional to the size of their previous layer.
 
 #### A Training Cycle
-Once the net is initialized, it is ready to do work.  
-__ONE__ training cycle == one feed forward and one back propagation with weight adjustments.  
-  
-To train one cycle, the input data must be parsed into a Matrix object with dimensions: `1xnumber_of_input_nodes` (1x4 in our case), and the target output must be parsed into a Matrix object with dimensions: `1xnumber_of_output_nodes` (1x10 in our case).  
+Once the net is initialized, it is ready to do work.
+__ONE__ training cycle == one feed forward and one back propagation with weight adjustments.
+
+To train one cycle, the input data must be parsed into a Matrix object with dimensions: `1xnumber_of_input_nodes` (1x4 in our case), and the target output must be parsed into a Matrix object with dimensions: `1xnumber_of_output_nodes` (1x10 in our case).
 ```
 Matrix input(1,4);
 input(0,0) =  0.3;
@@ -173,7 +173,7 @@ NN.trainingCycle(input, targetOutput);
 Repeate the process over all training instances.
 
 #### Querying the Net
-Once the training phase is complete, you can query it as follows:  
+Once the training phase is complete, you can query it as follows:
 (Technically speaking, you can query it right after initialization).
 
 Parse the query into a Matrix like parsed the training instance:
@@ -192,13 +192,13 @@ Matrix prediction = NN.queryNet(query);   // Will return a 1x10 Matrix object wi
 AND THAT'S IT!
 
 ## TODO
-1. Add `array`, `std::vector`, and `std::initializer_list` constructors to the Matrix class
-2. Either improve on or replace my Matrix class for better/faster performance
-3. Add multiple epoch learning with early stopping.
+1. Either improve on or replace my Matrix class for better/faster performance
+2. Give better error information (i.e. the size of the Matrixes in MatrixDimensionsMismatch etc)
 
 ## Authors
 
 * **Gil Dekel** - *Initial implementation* - [stagadish](https://github.com/stagadish)
+* **Joshua Pratt** - *Improvements and bug fixes* - [cypher1](https://github.com/cypher1)
 
 See also the list of [contributors](https://github.com/stagadish/NNplusplus/contributors) who participated in this project.
 
