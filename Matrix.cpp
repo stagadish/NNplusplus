@@ -51,7 +51,7 @@ Matrix::Matrix(const Matrix &rhs) : m_size_{rhs.m_size_}, n_size_{rhs.n_size_} {
 Matrix& Matrix::operator=(const Matrix &rhs) {
     if (this != &rhs) {
         Matrix copy{rhs};
-            std::swap(*this, copy);
+        std::swap(*this, copy);
     }
     return *this;
 }
@@ -91,13 +91,13 @@ const double& Matrix::operator()(const size_t row, const size_t col) const {
 
 // ADDITION
 Matrix& Matrix::operator+=(const Matrix & rhs) {
-    if (m_size_ == rhs.m_size_ && n_size_ == rhs.n_size_) {
-        for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-            matrix_[i] += rhs.matrix_[i];
-        }
-        return *this;
-    } else
+    if (m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
+    }
+    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
+        matrix_[i] += rhs.matrix_[i];
+    }
+    return *this;
 }
 
 Matrix& Matrix::operator+=(const double scalar) {
@@ -111,13 +111,13 @@ Matrix& Matrix::operator+=(const double scalar) {
 
 // SUBTRACTION
 Matrix& Matrix::operator-=(const Matrix & rhs) {
-    if (m_size_ == rhs.m_size_ && n_size_ == rhs.n_size_) {
-        for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-            matrix_[i] -= rhs.matrix_[i];
-        }
-        return *this;
-    } else
+    if (m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
+    }
+    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
+        matrix_[i] -= rhs.matrix_[i];
+    }
+    return *this;
 }
 
 Matrix& Matrix::operator-=(double scalar) {
@@ -131,13 +131,13 @@ Matrix& Matrix::operator-=(double scalar) {
 
 // MULTIPLICATION
 Matrix& Matrix::operator*=(const Matrix & rhs) {
-    if (m_size_ == rhs.m_size_ && n_size_ == rhs.n_size_) {
-        for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-            matrix_[i] *= rhs.matrix_[i];
-        }
-        return *this;
-    } else
+    if (m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
+    }
+    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
+        matrix_[i] *= rhs.matrix_[i];
+    }
+    return *this;
 }
 
 Matrix& Matrix::operator*=(const double scalar) {
@@ -151,13 +151,13 @@ Matrix& Matrix::operator*=(const double scalar) {
 
 //DIVISION
 Matrix& Matrix::operator/=(const Matrix & rhs) {
-    if (m_size_ == rhs.m_size_ && n_size_ == rhs.n_size_) {
-        for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-            matrix_[i] /= rhs.matrix_[i];
-        }
-        return *this;
-    } else
+    if (m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
+    }
+    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
+        matrix_[i] /= rhs.matrix_[i];
+    }
+    return *this;
 }
 
 Matrix& Matrix::operator/=(const double scalar) {
@@ -201,22 +201,22 @@ std::ostream& operator<<(std::ostream& os, const Matrix& rhs) {
  **********************************************************/
 
 Matrix Matrix::dot(const Matrix& rhs) const {
-    if (this->n_size_ == rhs.m_size_) {
-        Matrix rhs_T{rhs.T()};
-        Matrix dproduct(m_size_, rhs.n_size_);
-
-        for (size_t i = 0; i < m_size_; ++i) {
-            for (size_t j = 0; j < rhs_T.m_size_; ++j) {
-                double dot = 0;
-                for (size_t k = 0; k < n_size_; ++k) {
-                    dot += rowPtrs_[i][k] * rhs_T.rowPtrs_[j][k];
-                }
-                dproduct.rowPtrs_[i][j] = dot;
-            }
-        }
-        return dproduct;
-    } else
+    if (this->n_size_ != rhs.m_size_) {
         throw MatrixInnerDimensionsMismatch();
+    }
+    Matrix rhs_T{rhs.T()};
+    Matrix dproduct(m_size_, rhs.n_size_);
+
+    for (size_t i = 0; i < m_size_; ++i) {
+        for (size_t j = 0; j < rhs_T.m_size_; ++j) {
+            double dot = 0;
+            for (size_t k = 0; k < n_size_; ++k) {
+                dot += rowPtrs_[i][k] * rhs_T.rowPtrs_[j][k];
+            }
+            dproduct.rowPtrs_[i][j] = dot;
+        }
+    }
+    return dproduct;
 }
 
 size_t Matrix::getNumOfRows() const { return m_size_; }
@@ -265,11 +265,11 @@ void Matrix::printMtrx() const {
 
 // ADDITION
 Matrix operator+(const Matrix &lhs, const Matrix &rhs) {
-    if (lhs.m_size_ == rhs.m_size_ && lhs.n_size_ == rhs.n_size_) {
-        Matrix ret = lhs;
-        return ret += rhs;
-    } else
+    if (lhs.m_size_ != rhs.m_size_ || lhs.n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
+    }
+    Matrix ret = lhs;
+    return ret += rhs;
 }
 
 Matrix operator+(const Matrix &lhs, const double scalar) {
@@ -286,11 +286,11 @@ Matrix operator+(const double scalar, const Matrix &rhs) {
 
 // SUBTRACTION
 Matrix operator-(const Matrix &lhs, const Matrix &rhs) {
-    if (lhs.m_size_ == rhs.m_size_ && lhs.n_size_ == rhs.n_size_) {
-        Matrix ret = lhs;
-        return ret -= rhs;
-    } else
+    if (lhs.m_size_ != rhs.m_size_ || lhs.n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
+    }
+    Matrix ret = lhs;
+    return ret -= rhs;
 }
 
 Matrix operator-(const Matrix &lhs, double scalar) {
@@ -306,11 +306,11 @@ Matrix operator-(const double scalar, const Matrix &rhs) {
 
 // MULTIPLICATION
 Matrix operator*(const Matrix &lhs, const Matrix &rhs) {
-    if (lhs.m_size_ == rhs.m_size_ && lhs.n_size_ == rhs.n_size_) {
-        Matrix ret = lhs;
-        return ret *= rhs;
-    } else
+    if (lhs.m_size_ != rhs.m_size_ || lhs.n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
+    }
+    Matrix ret = lhs;
+    return ret *= rhs;
 }
 
 Matrix operator*(const Matrix &lhs, const double scalar) {
@@ -326,11 +326,11 @@ Matrix operator*(const double scalar, const Matrix &rhs) {
 
 //DIVISION
 Matrix operator/(const Matrix &lhs, const Matrix &rhs) {
-    if (lhs.m_size_ == rhs.m_size_ && lhs.n_size_ == rhs.n_size_) {
-        Matrix ret = lhs;
-        return ret /= rhs;
-    } else
+    if (lhs.m_size_ != rhs.m_size_ || lhs.n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
+    }
+    Matrix ret = lhs;
+    return ret /= rhs;
 }
 
 Matrix operator/(const Matrix &lhs, double scalar) {

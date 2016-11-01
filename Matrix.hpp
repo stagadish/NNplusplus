@@ -33,7 +33,7 @@ public:
     // Iterator ctor
     template<typename IT>
     Matrix(const IT begin, const IT end, const size_t m, const size_t n): Matrix(m, n) {
-        if(m*n != std::distance(begin, end)) {
+        if(m*n != (size_t)std::distance(begin, end)) {
             throw MatrixDimensionsMismatch();
         }
         std::copy(begin, end, matrix_);
