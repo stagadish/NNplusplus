@@ -27,8 +27,8 @@ public:
      **********************************************************/
 
     // Default ctor to initialize a new neural net object.
-    NeuralNet(size_t inputNodes = 1, size_t hiddenNodes = 1,
-              size_t outputNodes = 1, size_t hiddenLayers = 1, double learningRate = 0.1);
+    NeuralNet(const size_t inputNodes = 1, const size_t hiddenNodes = 1,
+              const size_t outputNodes = 1, const size_t hiddenLayers = 1, const double learningRate = 0.1);
 
     // A ctor that loads a saved neural net.
     // Expecting a filename with file type *.nn
@@ -48,7 +48,7 @@ public:
     void trainingCycle(const Matrix &inputList, const Matrix &targetOutput);
 
     // Train on a vector of input, output cases
-    void trainAll(const std::vector<std::pair<Matrix, Matrix> > &training, bool (*eval)(NeuralNet &, const std::vector<std::pair<Matrix, Matrix>> &, const int));
+    void trainAll(const std::vector<std::pair<Matrix, Matrix> > &training, bool (*eval)(NeuralNet &, const std::vector<std::pair<Matrix, Matrix> > &, const int));
 
     // A method to save the current state of the net.
     // Files are saved as *.nn.
@@ -63,10 +63,10 @@ private:
     // Initializes the weights (parameters) between the different layers
     // Initial values are being drawn from a normal distribution centered
     // at 0, with standard deviation of (number_of_inputs_to_nodes_in_next_layer)^(-0.5)
-    Matrix initializeMatrix(size_t m, size_t n) const;
+    Matrix initializeMatrix(const size_t m, const size_t n) const;
 
     // The activation function. Currently using Sigmoid function.
-    double activationFunction(double x) const;
+    double activationFunction(const double x) const;
 
     // A utility function to get the current time in a string.
     // Used to name neural nets when saved.

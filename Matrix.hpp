@@ -28,11 +28,11 @@ public:
 
     // Basic ctor to initialize a matrix of size m by n.
     // All matrix positions will be initialized to 0.
-    Matrix(size_t m = 0, size_t n = 0);
+    Matrix(const size_t m = 0, const size_t n = 0);
 
     // Iterator ctor
     template<typename IT>
-    Matrix(IT begin, IT end, size_t m, size_t n): Matrix(m, n) {
+    Matrix(const IT begin, const IT end, const size_t m, const size_t n): Matrix(m, n) {
         if(m*n != std::distance(begin, end)) {
             throw MatrixDimensionsMismatch();
         }
@@ -41,7 +41,7 @@ public:
 
     // Initializer list ctor
     template<typename T>
-    Matrix(std::initializer_list<T> list): Matrix(list.begin(), list.end(), 1, std::distance(list.begin(), list.end())) {}
+    Matrix(const std::initializer_list<T> list): Matrix(list.begin(), list.end(), 1, std::distance(list.begin(), list.end())) {}
 
     // COPY ctor
     Matrix(const Matrix &rhs);
@@ -63,9 +63,9 @@ public:
      **********************************************************/
 
     // A substitute to operator[] for a 2D arrays
-    double& operator()(size_t row, size_t col);
+    double& operator()(const size_t row, const size_t col);
 
-    const double& operator()(size_t row, size_t col) const;
+    const double& operator()(const size_t row, const size_t col) const;
 
 
 
@@ -73,16 +73,16 @@ public:
 
     Matrix& operator+=(const Matrix & rhs);
 
-    Matrix& operator+=(double scalar);
+    Matrix& operator+=(const double scalar);
 
     // Term by term addition operator for two matricies.
-    friend Matrix operator+(Matrix lhs, const Matrix &rhs);
+    friend Matrix operator+(const Matrix &lhs, const Matrix &rhs);
 
     // Term by term addition operator for matrix and scalar.
-    friend Matrix operator+(Matrix lhs, double scalar);
+    friend Matrix operator+(const Matrix &lhs, const double scalar);
 
     // Allowing for the scalar addition commutative property.
-    friend Matrix operator+(double scalar, Matrix rhs);
+    friend Matrix operator+(const double scalar, const Matrix &rhs);
 
 
 
@@ -90,16 +90,16 @@ public:
 
     Matrix& operator-=(const Matrix & rhs);
 
-    Matrix& operator-=(double scalar);
+    Matrix& operator-=(const double scalar);
 
     // Term by term subtraction operator for two matricies.
-    friend Matrix operator-(Matrix lhs, const Matrix &rhs);
+    friend Matrix operator-(const Matrix &lhs, const Matrix &rhs);
 
     // Term by term subtraction operator for matrix and scalar.
-    friend Matrix operator-(Matrix lhs, double scalar);
+    friend Matrix operator-(const Matrix &lhs, const double scalar);
 
     // Term by term subtraction operator for scalar and matrix.
-    friend Matrix operator-(double scalar, Matrix rhs);
+    friend Matrix operator-(const double scalar, const Matrix &rhs);
 
 
 
@@ -107,17 +107,17 @@ public:
 
     Matrix& operator*=(const Matrix & rhs);
 
-    Matrix& operator*=(double scalar);
+    Matrix& operator*=(const double scalar);
 
     // "Regular", term by term multiplication operator.
     // See function dot(Matrix &rhs) for dot product.
-    friend Matrix operator*(Matrix lhs, const Matrix &rhs);
+    friend Matrix operator*(const Matrix &lhs, const Matrix &rhs);
 
     // "Regular" scalar multiplication over matrix.
-    friend Matrix operator*(Matrix lhs, double scalar);
+    friend Matrix operator*(const Matrix &lhs, const double scalar);
 
     // Allowing for the scalar multiplication commutative property.
-    friend Matrix operator*(double scalar, Matrix rhs);
+    friend Matrix operator*(const double scalar, const Matrix &rhs);
 
 
 
@@ -125,16 +125,16 @@ public:
 
     Matrix& operator/=(const Matrix & rhs);
 
-    Matrix& operator/=(double scalar);
+    Matrix& operator/=(const double scalar);
 
     // Term by term division operator for two matricies.
-    friend Matrix operator/(Matrix lhs, const Matrix &rhs);
+    friend Matrix operator/(const Matrix &lhs, const Matrix &rhs);
 
     // Term by term division operator for matrix and scalar.
-    friend Matrix operator/(Matrix lhs, double scalar);
+    friend Matrix operator/(const Matrix &lhs, const double scalar);
 
     // Term by term division operator for scalar and matrix.
-    friend Matrix operator/(double scalar, Matrix rhs);
+    friend Matrix operator/(const double scalar, const Matrix &rhs);
 
 
 

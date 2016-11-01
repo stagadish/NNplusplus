@@ -28,7 +28,7 @@
  * Constructors
  **********************************************************/
 
-NeuralNet::NeuralNet(size_t inputNodes, size_t hiddenNodes, size_t outputNodes, size_t hiddenLayers, double learningRate )
+NeuralNet::NeuralNet(const size_t inputNodes, const size_t hiddenNodes, const size_t outputNodes, const size_t hiddenLayers, const double learningRate)
     : inNodes_{inputNodes}, hiddNodes_{hiddenNodes}, outNodes_{outputNodes}, hiddLayers_{hiddenLayers}, LR_{learningRate},
       weights_{std::vector<Matrix>()}, outputs_{std::vector<Matrix>()} {
 
@@ -86,11 +86,11 @@ NeuralNet::NeuralNet(const std::string &filename) {
     in >> inNodes_ >> hiddNodes_ >> outNodes_ >> hiddLayers_ >> LR_;
 
     weights_ = std::vector<Matrix>();
-    size_t weightsSize = 1+hiddLayers_;
+    const size_t weightsSize = 1+hiddLayers_;
     weights_.reserve(weightsSize);
 
     outputs_ = std::vector<Matrix>();
-    size_t outputsSize = 2+hiddLayers_;
+    const size_t outputsSize = 2+hiddLayers_;
     outputs_.reserve(outputsSize);
 
     size_t Mrows = 0, Ncols = 0;
@@ -210,7 +210,7 @@ void NeuralNet::loadNetwork(const std::string &name) {
  * Private Functions
  **********************************************************/
 
-Matrix NeuralNet::initializeMatrix(size_t rows, size_t cols) const {
+Matrix NeuralNet::initializeMatrix(const size_t rows, const size_t cols) const {
     Matrix init(rows,cols);
     std::default_random_engine generator((std::random_device()()));
     std::normal_distribution<double> distribution(0.0, std::pow(rows, -0.5));
@@ -224,7 +224,7 @@ Matrix NeuralNet::initializeMatrix(size_t rows, size_t cols) const {
 }
 
 // The activation function. Currently using Sigmoid function.
-double NeuralNet::activationFunction(double x) const {
+double NeuralNet::activationFunction(const double x) const {
     return 1/(1+std::exp(-x));
 }
 
