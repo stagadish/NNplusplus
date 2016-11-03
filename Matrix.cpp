@@ -50,7 +50,7 @@ Matrix::Matrix(const Matrix &rhs) : m_size_{rhs.m_size_}, n_size_{rhs.n_size_} {
 
 Matrix& Matrix::operator=(const Matrix &rhs) {
     if (this != &rhs) {
-        Matrix copy{rhs};
+        Matrix copy(rhs);
         std::swap(*this, copy);
     }
     return *this;
@@ -171,7 +171,7 @@ Matrix& Matrix::operator/=(const double scalar) {
 
 // UNARY NEGATION
 Matrix Matrix::operator-() const {
-    Matrix neg{*this};
+    Matrix neg(*this);
     for (size_t i = 0; i < m_size_ * n_size_; ++i) {
         neg.matrix_[i] = -neg.matrix_[i];
     }
@@ -204,7 +204,7 @@ Matrix Matrix::dot(const Matrix& rhs) const {
     if (this->n_size_ != rhs.m_size_) {
         throw MatrixInnerDimensionsMismatch();
     }
-    Matrix rhs_T{rhs.T()};
+    Matrix rhs_T(rhs.T());
     Matrix dproduct(m_size_, rhs.n_size_);
 
     for (size_t i = 0; i < m_size_; ++i) {

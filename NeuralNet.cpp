@@ -128,7 +128,7 @@ NeuralNet::NeuralNet(const std::string &filename) {
  **********************************************************/
 
 Matrix NeuralNet::queryNet(const Matrix &inputList) {
-    Matrix finalOutput{inputList.T()};
+    Matrix finalOutput(inputList.T());
     outputs_[0] = finalOutput;
 
     for (size_t i = 0; i < weights_.size(); ++i) {
@@ -146,16 +146,16 @@ Matrix NeuralNet::queryNet(const Matrix &inputList) {
 }
 
 void NeuralNet::trainingCycle(const Matrix &inputList, const Matrix &targetOutput) {
-    Matrix currOutput{queryNet(inputList)};                     // Returned transposed
-    Matrix currTargetOut{targetOutput.T()};
-    Matrix currLayerErrors{currTargetOut-currOutput};            // Calculate the final output layer's error
+    Matrix currOutput(queryNet(inputList));                     // Returned transposed
+    Matrix currTargetOut(targetOutput.T());
+    Matrix currLayerErrors(currTargetOut-currOutput);            // Calculate the final output layer's error
 
     // Update the weights going from the output nodes back
     for (long int i = weights_.size()-1; i >= 0; --i) {
-        Matrix prevLayerErrors{weights_[i].T().dot(currLayerErrors)};
-        Matrix prevHiddLayerOutsT{outputs_[i].T()};
+        Matrix prevLayerErrors(weights_[i].T().dot(currLayerErrors));
+        Matrix prevHiddLayerOutsT(outputs_[i].T());
 
-        Matrix deltaWeights{currLayerErrors*currOutput};
+        Matrix deltaWeights(currLayerErrors*currOutput);
         deltaWeights *= (1-currOutput);
         deltaWeights = deltaWeights.dot(prevHiddLayerOutsT);
         deltaWeights *= LR_;
