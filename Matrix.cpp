@@ -200,6 +200,14 @@ std::ostream& operator<<(std::ostream& os, const Matrix& rhs) {
  * Other Functions
  **********************************************************/
 
+void Matrix::apply(double (*functor)(double)) {
+    for (size_t m = 0; m < getNumOfRows(); ++m) {
+        for (size_t n = 0; n < getNumOfCols(); ++n) {
+            rowPtrs_[m][n] = functor(rowPtrs_[m][n]);
+        }
+    }
+}
+
 Matrix Matrix::dot(const Matrix& rhs) const {
     if (this->n_size_ != rhs.m_size_) {
         throw MatrixInnerDimensionsMismatch();

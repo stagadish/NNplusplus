@@ -164,6 +164,9 @@ public:
     // Transpose the matrix MxN -> NxM
     Matrix T() const;
 
+    // Applies a function (double->double) to all the values of a matrix
+    void apply(double (*functor)(double));
+
     // Get the coordinates of the largest value in the matrix.
     // Will return the coordinates of the earliest larger val.
     std::pair<size_t, size_t> getMaxVal() const;

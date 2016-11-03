@@ -133,12 +133,7 @@ Matrix NeuralNet::queryNet(const Matrix &inputList) {
 
     for (size_t i = 0; i < weights_.size(); ++i) {
         finalOutput = weights_[i].dot(finalOutput);
-
-        for (size_t m = 0; m < finalOutput.getNumOfRows(); ++ m) {
-            for (size_t n = 0; n < finalOutput.getNumOfCols(); ++n) {
-                finalOutput(m,n) = activationFunction(finalOutput(m,n));
-            }
-        }
+        finalOutput.apply(activationFunction);
         outputs_[i+1] = finalOutput;
     }
 
@@ -224,7 +219,7 @@ Matrix NeuralNet::initializeMatrix(const size_t rows, const size_t cols) const {
 }
 
 // The activation function. Currently using Sigmoid function.
-double NeuralNet::activationFunction(const double x) const {
+double NeuralNet::activationFunction(const double x) {
     return 1/(1+std::exp(-x));
 }
 
