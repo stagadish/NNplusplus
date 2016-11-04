@@ -34,18 +34,10 @@ Matrix::Matrix(const size_t m, const size_t n) : m_size_{m}, n_size_{n} {
     }
 }
 
-Matrix::Matrix(const Matrix &rhs) : m_size_{rhs.m_size_}, n_size_{rhs.n_size_} {
-    matrix_ = new double[m_size_ * n_size_]();
-    rowPtrs_ = new double*[m_size_];
-
+Matrix::Matrix(const Matrix &rhs) : Matrix(rhs.m_size_, rhs.n_size_) {
     for (size_t i = 0; i < m_size_ * n_size_; ++i) {
         matrix_[i] = rhs.matrix_[i];
     }
-
-    for (size_t i = 0; i < m_size_; ++i) {
-        rowPtrs_[i] = &matrix_[i*n_size_];
-    }
-
 }
 
 Matrix& Matrix::operator=(const Matrix &rhs) {
@@ -109,15 +101,6 @@ Matrix& Matrix::operator+=(const Matrix & rhs) {
     return *this;
 }
 
-Matrix& Matrix::operator+=(const double scalar) {
-    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-        matrix_[i] += scalar;
-    }
-    return *this;
-}
-
-
-
 // SUBTRACTION
 Matrix& Matrix::operator-=(const Matrix & rhs) {
     if (m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
@@ -129,33 +112,18 @@ Matrix& Matrix::operator-=(const Matrix & rhs) {
     return *this;
 }
 
-Matrix& Matrix::operator-=(double scalar) {
-    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-        matrix_[i] -= scalar;
-    }
-    return *this;
-}
-
-
 
 // MULTIPLICATION
 Matrix& Matrix::operator*=(const Matrix & rhs) {
     if (m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
     }
+
     for (size_t i = 0; i < m_size_ * n_size_; ++i) {
         matrix_[i] *= rhs.matrix_[i];
     }
     return *this;
 }
-
-Matrix& Matrix::operator*=(const double scalar) {
-    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-        matrix_[i] *= scalar;
-    }
-    return *this;
-}
-
 
 
 //DIVISION
@@ -169,23 +137,6 @@ Matrix& Matrix::operator/=(const Matrix & rhs) {
     return *this;
 }
 
-Matrix& Matrix::operator/=(const double scalar) {
-    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-        matrix_[i] /= scalar;
-    }
-    return *this;
-}
-
-
-
-// UNARY NEGATION
-Matrix Matrix::operator-() const {
-    Matrix neg(*this);
-    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-        neg.matrix_[i] = -neg.matrix_[i];
-    }
-    return neg;
-}
 
 // PRINT MATRIX
 std::ostream& operator<<(std::ostream& os, const Matrix& rhs) {
@@ -278,18 +229,6 @@ Matrix operator+(const Matrix &lhs, const Matrix &rhs) {
     return ret += rhs;
 }
 
-Matrix operator+(const Matrix &lhs, const double scalar) {
-    Matrix ret = lhs;
-    return ret += scalar;
-}
-
-Matrix operator+(const double scalar, const Matrix &rhs) {
-    Matrix ret = rhs;
-    return ret += scalar;
-}
-
-
-
 // SUBTRACTION
 Matrix operator-(const Matrix &lhs, const Matrix &rhs) {
     if (lhs.m_size_ != rhs.m_size_ || lhs.n_size_ != rhs.n_size_) {
@@ -298,17 +237,6 @@ Matrix operator-(const Matrix &lhs, const Matrix &rhs) {
     Matrix ret = lhs;
     return ret -= rhs;
 }
-
-Matrix operator-(const Matrix &lhs, double scalar) {
-    Matrix ret = lhs;
-    return ret -= scalar;
-}
-
-Matrix operator-(const double scalar, const Matrix &rhs) {
-    return -rhs+scalar;
-}
-
-
 
 // MULTIPLICATION
 Matrix operator*(const Matrix &lhs, const Matrix &rhs) {
@@ -319,17 +247,6 @@ Matrix operator*(const Matrix &lhs, const Matrix &rhs) {
     return ret *= rhs;
 }
 
-Matrix operator*(const Matrix &lhs, const double scalar) {
-    Matrix ret = lhs;
-    return ret *= scalar;
-}
-
-Matrix operator*(const double scalar, const Matrix &rhs) {
-    return rhs*scalar;
-}
-
-
-
 //DIVISION
 Matrix operator/(const Matrix &lhs, const Matrix &rhs) {
     if (lhs.m_size_ != rhs.m_size_ || lhs.n_size_ != rhs.n_size_) {
@@ -338,18 +255,3 @@ Matrix operator/(const Matrix &lhs, const Matrix &rhs) {
     Matrix ret = lhs;
     return ret /= rhs;
 }
-
-Matrix operator/(const Matrix &lhs, double scalar) {
-    Matrix ret = lhs;
-    return ret /= scalar;
-}
-
-Matrix operator/(const double scalar, const Matrix &rhs) {
-    Matrix ret = rhs;
-    for (size_t i = 0; i < rhs.m_size_ * rhs.n_size_; ++i) {
-        ret.matrix_[i] = scalar/rhs.matrix_[i];
-    }
-    return ret;
-}
-
-
