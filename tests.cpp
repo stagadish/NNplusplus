@@ -8,11 +8,9 @@
 //  Last edited by Joshua Pratt on 10/01/16.
 //
 
-#include <cmath>
-#include <cstdlib>  //std::rand, std::srand
+#include <chrono>
 #include <fstream>
 #include <iostream>
-#include <numeric>  //std::accumulate
 #include <sstream>
 #include <string>
 
@@ -352,8 +350,6 @@ void testNeuralNet() {
               << testTargetOutputs[0].getNumOfRows() << ","
               << testTargetOutputs[0].getNumOfCols() << std::endl;
 
-    double numOfTests = testInputs.size();
-
     testBatch("Untrained NeuralNet");
     for (unsigned int i = 0; i < testInputs.size(); ++i) {
         Matrix result = NN.queryNet(testInputs[i]);
@@ -369,8 +365,6 @@ void testNeuralNet() {
 
     std::cout << "Parsing TESTING data...\n";
     NN.loadNetwork("saved_nets/2016-8-24--07-12-33.nn");
-
-    numOfTests = testInputs.size();
 
     testBatch("Trained NeuralNet");
     for (unsigned int i = 0; i < testInputs.size(); ++i) {
