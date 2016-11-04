@@ -67,7 +67,11 @@ public:
 
     const double& operator()(const size_t row, const size_t col) const;
 
-
+    // EQUALITY
+    bool operator==(const Matrix & rhs) const;
+    bool operator!=(const Matrix & rhs) const {
+        return !((*this) == rhs);
+    }
 
     // ADDITION
 
@@ -165,7 +169,14 @@ public:
     Matrix T() const;
 
     // Applies a function (double->double) to all the values of a matrix
-    void apply(double (*functor)(double));
+    template<typename Func>
+    void apply(Func functor) {
+        for(size_t m = 0; m < m_size_; ++m) {
+            for(size_t n = 0; n < n_size_; ++n) {
+                rowPtrs_[m][n] = functor(rowPtrs_[m][n]);
+            }
+        }
+    }
 
     // Get the coordinates of the largest value in the matrix.
     // Will return the coordinates of the earliest larger val.

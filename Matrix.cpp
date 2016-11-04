@@ -88,6 +88,15 @@ const double& Matrix::operator()(const size_t row, const size_t col) const {
     return rowPtrs_[row][col];
 }
 
+bool Matrix::operator==(const Matrix & rhs) const {
+    if(rhs.m_size_ != m_size_) return false;
+    if(rhs.n_size_ != n_size_) return false;
+
+    for(size_t i = 0; i < m_size_*n_size_; ++i) {
+        if(matrix_[i] != rhs.matrix_[i]) return false;
+    }
+    return true;
+}
 
 // ADDITION
 Matrix& Matrix::operator+=(const Matrix & rhs) {
@@ -199,14 +208,6 @@ std::ostream& operator<<(std::ostream& os, const Matrix& rhs) {
 /**********************************************************
  * Other Functions
  **********************************************************/
-
-void Matrix::apply(double (*functor)(double)) {
-    for (size_t m = 0; m < getNumOfRows(); ++m) {
-        for (size_t n = 0; n < getNumOfCols(); ++n) {
-            rowPtrs_[m][n] = functor(rowPtrs_[m][n]);
-        }
-    }
-}
 
 Matrix Matrix::dot(const Matrix& rhs) const {
     if (this->n_size_ != rhs.m_size_) {
