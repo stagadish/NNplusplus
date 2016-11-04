@@ -212,16 +212,13 @@ Matrix Matrix::dot(const Matrix& rhs) const {
     if (this->n_size_ != rhs.m_size_) {
         throw MatrixInnerDimensionsMismatch();
     }
-    Matrix rhs_T(rhs.T());
     Matrix dproduct(m_size_, rhs.n_size_);
-
-    for (size_t i = 0; i < m_size_; ++i) {
-        for (size_t j = 0; j < rhs_T.m_size_; ++j) {
-            double dot = 0;
+    for (size_t i = 0; i < dproduct.m_size_; ++i) {
+        for (size_t j = 0; j < dproduct.n_size_; ++j) {
+            double &dot = dproduct.rowPtrs_[i][j];
             for (size_t k = 0; k < n_size_; ++k) {
-                dot += rowPtrs_[i][k] * rhs_T.rowPtrs_[j][k];
+                dot += rowPtrs_[i][k] * rhs.rowPtrs_[k][j];
             }
-            dproduct.rowPtrs_[i][j] = dot;
         }
     }
     return dproduct;
