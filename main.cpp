@@ -13,6 +13,8 @@
 #include <sstream>
 #include <string>
 #include <cmath>
+#include <random>
+#include <algorithm>
 
 
 #include "NeuralNet.hpp"
@@ -56,7 +58,8 @@ int main(int /*argc*/, const char * /*argv*/[]) {
     for (unsigned int i = 0; i < shuffledIdxs.size(); ++i) {
         shuffledIdxs[i] = i;
     }
-    std::random_shuffle(shuffledIdxs.begin(), shuffledIdxs.end(), myrandom);
+    auto engine = std::default_random_engine{};
+    std::shuffle(shuffledIdxs.begin(), shuffledIdxs.end(), engine);
 
     size_t cvClusters = shuffledIdxs.size()/CV_k;
 
