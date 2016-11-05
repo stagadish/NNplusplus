@@ -172,10 +172,13 @@ class Matrix {
     Matrix dot(const Matrix &rhs) const;
 
     // Get number of rows (M)xN
-    size_t getNumOfRows() const;
+    constexpr size_t getNumOfRows() const { return m_size_; }
 
     // Get number of columns Mx(N)
-    size_t getNumOfCols() const;
+    constexpr size_t getNumOfCols() const { return n_size_; }
+
+    // Get number of entries M*N
+    constexpr size_t size() const { return m_size_ * n_size_; }
 
     // Transpose the matrix MxN -> NxM
     Matrix T() const;
@@ -183,7 +186,7 @@ class Matrix {
     // Applies a function (double->double) to all the values of a matrix
     template <typename Func>
     Matrix &apply(Func functor) {
-        for (size_t i = 0; i < m_size_ * n_size_; ++i) {
+        for (size_t i = 0; i < size(); ++i) {
             matrix_[i] = functor(matrix_[i]);
         }
         return *this;

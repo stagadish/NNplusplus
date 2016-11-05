@@ -29,7 +29,7 @@
  **********************************************************/
 
 Matrix::Matrix(const size_t m, const size_t n) : m_size_{m}, n_size_{n} {
-    matrix_ = new double[m_size_ * n_size_]();
+    matrix_ = new double[size()]();
     rowPtrs_ = new double*[m_size_];
 
     for (size_t i = 0; i < m_size_; ++i) {
@@ -38,13 +38,17 @@ Matrix::Matrix(const size_t m, const size_t n) : m_size_{m}, n_size_{n} {
 }
 
 Matrix::Matrix(const Matrix &rhs) : Matrix(rhs.m_size_, rhs.n_size_) {
-    std::copy( rhs.matrix_, rhs.matrix_ + m_size_*n_size_, matrix_);
+    std::copy( rhs.matrix_, rhs.matrix_ + size(), matrix_);
 }
 
 Matrix& Matrix::operator=(const Matrix &rhs) {
     if (this != &rhs) {
-        Matrix copy(rhs);
-        std::swap(*this, copy);
+        if(m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
+            Matrix copy(rhs);
+            std::swap(*this, copy);
+        } else {
+            std::copy( rhs.matrix_, rhs.matrix_ + size(), matrix_);
+        }
     }
     return *this;
 }
@@ -85,7 +89,7 @@ bool Matrix::operator==(const Matrix & rhs) const {
     if(rhs.m_size_ != m_size_) return false;
     if(rhs.n_size_ != n_size_) return false;
 
-    for(size_t i = 0; i < m_size_*n_size_; ++i) {
+    for(size_t i = 0; i < size(); ++i) {
         if(matrix_[i] != rhs.matrix_[i]) return false;
     }
     return true;
@@ -96,7 +100,7 @@ Matrix& Matrix::operator+=(const Matrix & rhs) {
     if (m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
     }
-    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
+    for (size_t i = 0; i < size(); ++i) {
         matrix_[i] += rhs.matrix_[i];
     }
     return *this;
@@ -107,7 +111,7 @@ Matrix& Matrix::operator-=(const Matrix & rhs) {
     if (m_size_ != rhs.m_size_ || n_size_ != rhs.n_size_) {
         throw MatrixDimensionsMismatch();
     }
-    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
+    for (size_t i = 0; i < size(); ++i) {
         matrix_[i] -= rhs.matrix_[i];
     }
     return *this;
@@ -176,9 +180,6 @@ Matrix Matrix::dot(const Matrix& rhs) const {
     }
     return dproduct;
 }
-
-size_t Matrix::getNumOfRows() const { return m_size_; }
-size_t Matrix::getNumOfCols() const { return n_size_; }
 
 Matrix Matrix::T() const {
     Matrix T(n_size_, m_size_);
