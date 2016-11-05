@@ -188,6 +188,20 @@ void testMatrix() {
     check("Initialize all entries to their index", match);
 
     check("Equality  a == a", mtrxB == mtrxB);
+
+    match = true;
+    const Matrix const_cpy(mtrxB);
+    for (size_t i = 0; i < mtrxB.getNumOfRows() && match; ++i) {
+        for (size_t j = 0; j < mtrxB.getNumOfCols() && match; ++j) {
+            if (mtrxB(i, j) != const_cpy(i, j)) {
+                // This uses two different operator()s
+                // Do not replace with == as that uses both as const
+                match = false;
+            }
+        }
+    }
+    check("Const equality (const a)(i, j) == a(i, j)", match);
+
     check("Inquality a != b", mtrx != mtrxB);
 
     Matrix B_T = mtrxB.T();
