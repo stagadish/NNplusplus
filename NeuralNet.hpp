@@ -10,12 +10,7 @@
 #define NEURALNET_HPP_
 
 #include <iostream>
-#include <fstream>
-#include <utility>          // std::swap and std::move
 #include <vector>
-#include <random>
-#include <cmath>            // for std::pow()
-#include <ctime>
 #include "Matrix.hpp"
 
 

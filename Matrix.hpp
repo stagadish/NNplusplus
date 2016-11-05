@@ -12,11 +12,8 @@
 #ifndef MATRIX_HPP_
 #define MATRIX_HPP_
 
-#include <cmath>  // INFINITY
-#include <iostream>
-#include <utility>  // std::swap and std::move
-#include <vector>
-
+#include <iterator>
+#include <initializer_list>
 #include "MatrixExceptions.hpp"
 
 class Matrix {

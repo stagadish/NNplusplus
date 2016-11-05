@@ -6,6 +6,10 @@
 //  Last edited by Joshua Pratt on 10/01/16.
 //
 
+#include <cmath>  // INFINITY
+#include <iostream>
+#include <utility>  // std::swap and std::move
+
 #include "Matrix.hpp"
 
 /*

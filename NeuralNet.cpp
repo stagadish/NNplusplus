@@ -7,7 +7,9 @@
 //
 
 #include <fstream>
-
+#include <random>
+#include <cmath>            // for std::pow()
+#include <ctime>            // for localtime
 #include "NeuralNet.hpp"
 
 /*
