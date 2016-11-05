@@ -149,21 +149,19 @@ void NeuralNet::trainingCycle(const Matrix &inputList, const Matrix &targetOutpu
 
     // Update the weights going from the output nodes back
     for (long int i = weights_.size()-1; i >= 0; --i) {
-        Matrix prevLayerErrors(weights_[i].T().dot(currLayerErrors));
-        Matrix prevHiddLayerOutsT(outputs_[i].T());
+        Matrix update(currLayerErrors);
+        update *= currOutput;
+        update *= 1-currOutput;
+        update = update.dot(outputs_[i].T());
+        update *= LR_;
+        weights_[i] += update;
 
-        Matrix deltaWeights(currLayerErrors*currOutput);
-        deltaWeights *= (1-currOutput);
-        deltaWeights = deltaWeights.dot(prevHiddLayerOutsT);
-        deltaWeights *= LR_;
-        weights_[i] += deltaWeights;
-
-        currLayerErrors = prevLayerErrors;
+        currLayerErrors = weights_[i].T().dot(currLayerErrors);
         currOutput = outputs_[i];
     }
 }
 
-void NeuralNet::trainAll(const std::vector<std::pair<Matrix, Matrix> > &training, bool (*eval)(NeuralNet &, const std::vector<std::pair<Matrix, Matrix>> &, const int)){
+void NeuralNet::trainAll(const std::vector<std::pair<Matrix, Matrix> > &training, bool (*eval)(NeuralNet &, const std::vector<std::pair<Matrix, Matrix>> &, const int)) {
     unsigned int iterations = 0U;
     while(eval(*this, training, iterations++)) {
         for(auto test : training) {

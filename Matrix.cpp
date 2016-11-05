@@ -8,7 +8,6 @@
 
 #include <cmath>  // INFINITY
 #include <iostream>
-#include <utility>  // std::swap and std::move
 
 #include "Matrix.hpp"
 
@@ -34,14 +33,12 @@ Matrix::Matrix(const size_t m, const size_t n) : m_size_{m}, n_size_{n} {
     rowPtrs_ = new double*[m_size_];
 
     for (size_t i = 0; i < m_size_; ++i) {
-        rowPtrs_[i] = &matrix_[i*n_size_];
+        rowPtrs_[i] = matrix_+i*n_size_;
     }
 }
 
 Matrix::Matrix(const Matrix &rhs) : Matrix(rhs.m_size_, rhs.n_size_) {
-    for (size_t i = 0; i < m_size_ * n_size_; ++i) {
-        matrix_[i] = rhs.matrix_[i];
-    }
+    std::copy( rhs.matrix_, rhs.matrix_ + m_size_*n_size_, matrix_);
 }
 
 Matrix& Matrix::operator=(const Matrix &rhs) {
@@ -194,20 +191,18 @@ Matrix Matrix::T() const {
 }
 
 std::pair<size_t, size_t> Matrix::getMaxVal() const {
-    long int maxI = -1;
-    long int maxJ = -1;
+    std::pair<size_t, size_t> max{-1, -1};
     double maxVal = -INFINITY;
 
     for (size_t i = 0; i < m_size_; ++i) {
         for (size_t j = 0; j < n_size_; ++j) {
             if (rowPtrs_[i][j] >= maxVal) {
                 maxVal = rowPtrs_[i][j];
-                maxI = i;
-                maxJ = j;
+                max = std::make_pair(i, j);
             }
         }
     }
-    return std::pair<size_t, size_t>(maxI, maxJ);
+    return max;
 }
 
 void Matrix::printMtrx() const {

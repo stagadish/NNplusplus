@@ -77,7 +77,7 @@ private:
     double LR_;             // The learning rate.
 
     std::vector<Matrix> weights_;  // The weight matrices
-    std::vector<Matrix> outputs_;  // Intermediate outputs of all the layers are requierd for training.
+    std::vector<Matrix> outputs_;  // Intermediate outputs of all the layers are required for training.
                                     // this is where they are stored.
 };
 

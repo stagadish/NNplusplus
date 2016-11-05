@@ -12,8 +12,9 @@
 #ifndef MATRIX_HPP_
 #define MATRIX_HPP_
 
-#include <iterator>
 #include <initializer_list>
+#include <iterator>
+#include <utility>  // std::swap, std::move and std::pair
 #include "MatrixExceptions.hpp"
 
 class Matrix {
