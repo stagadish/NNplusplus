@@ -206,16 +206,12 @@ void NeuralNet::loadNetwork(const std::string &name) {
  **********************************************************/
 
 Matrix NeuralNet::initializeMatrix(const size_t rows, const size_t cols) const {
-    Matrix init(rows,cols);
     std::default_random_engine generator((std::random_device()()));
     std::normal_distribution<double> distribution(0.0, std::pow(rows, -0.5));
 
-    for (size_t m = 0; m < rows; ++m) {
-        for (size_t n = 0; n < cols; ++n) {
-            init(m,n) = distribution(generator);
-        }
-    }
-    return init;
+    return Matrix(rows, cols).apply([&distribution, &generator](double &x) {
+        x = distribution(generator);
+    });
 }
 
 // The activation function. Currently using Sigmoid function.
