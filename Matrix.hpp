@@ -172,13 +172,13 @@ class Matrix {
     Matrix dot(const Matrix &rhs) const;
 
     // Get number of rows (M)xN
-    constexpr size_t getNumOfRows() const { return m_size_; }
+    constexpr size_t getNumOfRows() const { return n_rows; }
 
     // Get number of columns Mx(N)
-    constexpr size_t getNumOfCols() const { return n_size_; }
+    constexpr size_t getNumOfCols() const { return n_cols; }
 
     // Get number of entries M*N
-    constexpr size_t size() const { return m_size_ * n_size_; }
+    constexpr size_t size() const { return n_rows * n_cols; }
 
     // Transpose the matrix MxN -> NxM
     Matrix T() const;
@@ -207,8 +207,8 @@ class Matrix {
     void printMtrx() const;
 
    private:
-    size_t m_size_;     // (M)xN
-    size_t n_size_;     // Mx(N)
+    size_t n_rows;     // (M)xN
+    size_t n_cols;     // Mx(N)
     double *matrix_;    // A pointer to the array.
     double **rowPtrs_;  // An array of row pointers.
                         // used to avoid repeated arithmetics
