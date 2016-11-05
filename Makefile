@@ -1,5 +1,7 @@
 CXX = g++
-CXXFLAGS = -Wall -Werror -O2 -std=c++14 -fsanitize=address
+UNSAFECXXFLAGS = -Wall -Werror -O2 -std=c++14
+SAFECXXFLAGS = $(UNSAFECXXFLAGS) -fsanitize=address
+CXXFLAGS = $(UNSAFECXXFLAGS)
 
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(subst .cpp,.o,$(SOURCES)) tests main
