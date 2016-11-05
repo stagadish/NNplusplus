@@ -61,7 +61,7 @@ private:
     Matrix initializeMatrix(const size_t m, const size_t n) const;
 
     // The activation function. Currently using Sigmoid function.
-    static double activationFunction(const double x);
+    static double activationFunction(double &x);
 
     // A utility function to get the current time in a string.
     // Used to name neural nets when saved.

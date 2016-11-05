@@ -153,18 +153,16 @@ void testMatrix() {
     check("Initialization size (columns)", mtrx.getNumOfCols() == n);
 
     match = true;
-    mtrx.apply([&match](double x) {
+    mtrx.apply([&match](const double &x) {
         if (x != 0) match = false;
-        return x;
     });
     check("Initialize all mtrx entries to 0 by default", match);
 
-    mtrx.apply([](double) { return init_v; });
+    mtrx.apply([](double &x) { x = init_v; });
 
     match = true;
-    mtrx.apply([&match](double x) {
+    mtrx.apply([&match](const double &x) {
         if (x != init_v) match = false;
-        return x;
     });
     check("Initialize all mtrx entries to " + std::to_string(init_v), match);
 
@@ -173,7 +171,7 @@ void testMatrix() {
     check("Initialization size B (columns)", mtrx.getNumOfCols() == m);
 
     int count = 1;
-    mtrxB.apply([&count](double) { return count++; });
+    mtrxB.apply([&count](double &x) { x = count++; });
 
     match = true;
     count = 1;
@@ -391,6 +389,7 @@ void testNeuralNet() {
         check("Classification of sample " + std::to_string(i),
               resultVal == targetVal, 0);
     }
+    check("NeuralNet accuracy maintained after save/load", failedTests == 3);
     testResults();
 }
 

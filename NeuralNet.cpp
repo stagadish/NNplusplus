@@ -219,8 +219,8 @@ Matrix NeuralNet::initializeMatrix(const size_t rows, const size_t cols) const {
 }
 
 // The activation function. Currently using Sigmoid function.
-double NeuralNet::activationFunction(const double x) {
-    return 1/(1+std::exp(-x));
+double NeuralNet::activationFunction(double &x) {
+    return x = 1/(1+std::exp(-x));
 }
 
 std::string NeuralNet::getCurrTime() const {

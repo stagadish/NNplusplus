@@ -75,7 +75,7 @@ class Matrix {
     Matrix &operator+=(const Matrix &rhs);
 
     Matrix &operator+=(const double scalar) {
-        return apply([&scalar](const double x) { return x + scalar; });
+        return apply([&scalar](double &x) { x += scalar; });
     }
 
     // Term by term addition operator for two matricies.
@@ -97,7 +97,7 @@ class Matrix {
     Matrix &operator-=(const Matrix &rhs);
 
     Matrix &operator-=(const double scalar) {
-        return apply([&scalar](double x) { return x - scalar; });
+        return apply([&scalar](double &x) { x -= scalar; });
     }
 
     // Term by term subtraction operator for two matricies.
@@ -119,7 +119,7 @@ class Matrix {
     Matrix &operator*=(const Matrix &rhs);
 
     Matrix &operator*=(const double scalar) {
-        return apply([&scalar](double x) { return x * scalar; });
+        return apply([&scalar](double &x) { x *= scalar; });
     }
 
     // "Regular", term by term multiplication operator.
@@ -142,7 +142,7 @@ class Matrix {
     Matrix &operator/=(const Matrix &rhs);
 
     Matrix &operator/=(const double scalar) {
-        return apply([&scalar](double x) { return x / scalar; });
+        return apply([&scalar](double &x) { x /= scalar; });
     }
 
     // Term by term division operator for two matricies.
@@ -157,7 +157,7 @@ class Matrix {
 
     // Term by term division operator for scalar and matrix.
     friend Matrix operator/(const double scalar, const Matrix &rhs) {
-        return rhs.apply([&scalar](double x) { return scalar / x; });
+        return rhs.apply([&scalar](double &x) { x = scalar / x; });
     }
 
     // Unary minus operator for Matrix term by term negation
@@ -191,7 +191,7 @@ class Matrix {
     template <typename Func>
     Matrix &apply(Func functor) {
         for (size_t i = 0; i < size(); ++i) {
-            matrix_[i] = functor(matrix_[i]);
+            functor(matrix_[i]);
         }
         return *this;
     }
@@ -199,8 +199,7 @@ class Matrix {
     // Const form
     template <typename Func>
     Matrix apply(Func functor) const {
-        Matrix tmp(*this);
-        return tmp.apply(functor);
+        return Matrix(*this).apply(functor);
     }
 
     // Get the coordinates of the largest value in the matrix.
