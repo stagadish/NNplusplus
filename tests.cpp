@@ -281,59 +281,59 @@ void testMatrix() {
     testResults();
     /*
     std::cout << "mtrx*B_T:\n";
-    (mtrx * B_T).printMtrx();
+    std::cout << (mtrx * B_T) << "\n";
 
     std::cout << "B_T*mtrx:\n";
-    (B_T * mtrx).printMtrx();
+    std::cout << (B_T * mtrx) << "\n";
 
     std::cout << "mtrx+2:\n";
-    (mtrx + 2).printMtrx();
+    std::cout << (mtrx + 2) << "\n";
 
     std::cout << "2+mtrx:\n";
-    (2 + mtrx).printMtrx();
+    std::cout << (2 + mtrx) << "\n";
 
     std::cout << "mtrx-2:\n";
-    (mtrx - 2).printMtrx();
+    std::cout << (mtrx - 2) << "\n";
 
     std::cout << "2-mtrx:\n";
-    (2 - mtrx).printMtrx();
+    std::cout << (2 - mtrx) << "\n";
 
     std::cout << "mtrx*2:\n";
-    (mtrx * 2).printMtrx();
+    std::cout << (mtrx * 2) << "\n";
 
     std::cout << "2*mtrx:\n";
-    (2 * mtrx).printMtrx();
+    std::cout << (2 * mtrx) << "\n";
 
     std::cout << "mtrx/B_T:\n";
-    (mtrx / B_T).printMtrx();
+    std::cout << (mtrx / B_T) << "\n";
 
     std::cout << "B_T/mtrx:\n";
-    (B_T / mtrx).printMtrx();
+    std::cout << (B_T / mtrx) << "\n";
 
     std::cout << "mtrx/2:\n";
-    (mtrx / 2).printMtrx();
+    std::cout << (mtrx / 2) << "\n";
 
     std::cout << "2/mtrx:\n";
-    (2 / mtrx).printMtrx();
+    std::cout << (2 / mtrx) << "\n";
 
     std::cout << "mtrx/=2:\n";
-    (mtrx /= 2).printMtrx();
+    std::cout << (mtrx /= 2) << "\n";
 
     std::cout << "mtrx*=2:\n";
-    (mtrx *= 2).printMtrx();
+    std::cout << (mtrx *= 2) << "\n";
 
     std::cout << "mtrx*=2:\n";
-    (mtrx *= 2).printMtrx();
+    std::cout << (mtrx *= 2) << "\n";
 
     std::cout << "neg = -mtrx:\n";
     Matrix neg{-mtrx};
-    neg.printMtrx();
+    std::cout << neg << "\n";
 
     std::cout << "-neg:\n";
-    (-neg).printMtrx();
+    std::cout << (-neg) << "\n";
 
     std::cout << "mtrx.dot(mtrxB):\n";
-    (mtrx.dot(mtrxB)).printMtrx();
+    std::cout << (mtrx.dot(mtrxB)) << "\n";
 
     std::cout << "mtrxB.dot(mtrx):\n";
     mtrxB.dot(mtrx);
