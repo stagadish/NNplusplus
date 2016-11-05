@@ -79,12 +79,13 @@ class Matrix {
     }
 
     // Term by term addition operator for two matricies.
-    friend Matrix operator+(const Matrix &lhs, const Matrix &rhs);
+    friend Matrix operator+(const Matrix &lhs, const Matrix &rhs) {
+        return Matrix(lhs) += rhs;
+    }
 
     // Term by term addition operator for matrix and scalar.
     friend Matrix operator+(const Matrix &lhs, const double scalar) {
-        Matrix ret = lhs;
-        return ret += scalar;
+        return Matrix(lhs) += scalar;
     }
 
     // Allowing for the scalar addition commutative property.
@@ -100,12 +101,13 @@ class Matrix {
     }
 
     // Term by term subtraction operator for two matricies.
-    friend Matrix operator-(const Matrix &lhs, const Matrix &rhs);
+    friend Matrix operator-(const Matrix &lhs, const Matrix &rhs) {
+        return Matrix(lhs) -= rhs;
+    }
 
     // Term by term subtraction operator for matrix and scalar.
     friend Matrix operator-(const Matrix &lhs, const double scalar) {
-        Matrix ret = lhs;
-        return ret -= scalar;
+        return Matrix(lhs) -= scalar;
     }
 
     // Term by term subtraction operator for scalar and matrix.
@@ -122,12 +124,13 @@ class Matrix {
 
     // "Regular", term by term multiplication operator.
     // See function dot(Matrix &rhs) for dot product.
-    friend Matrix operator*(const Matrix &lhs, const Matrix &rhs);
+    friend Matrix operator*(const Matrix &lhs, const Matrix &rhs) {
+        return Matrix(lhs) *= rhs;
+    }
 
     // "Regular" scalar multiplication over matrix.
     friend Matrix operator*(const Matrix &lhs, const double scalar) {
-        Matrix ret = lhs;
-        return ret *= scalar;
+        return Matrix(lhs) *= scalar;
     }
 
     // Allowing for the scalar multiplication commutative property.
@@ -143,12 +146,13 @@ class Matrix {
     }
 
     // Term by term division operator for two matricies.
-    friend Matrix operator/(const Matrix &lhs, const Matrix &rhs);
+    friend Matrix operator/(const Matrix &lhs, const Matrix &rhs) {
+        return Matrix(lhs) /= rhs;
+    }
 
     // Term by term division operator for matrix and scalar.
     friend Matrix operator/(const Matrix &lhs, const double scalar) {
-        Matrix ret = lhs;
-        return ret /= scalar;
+        return Matrix(lhs) /= scalar;
     }
 
     // Term by term division operator for scalar and matrix.
@@ -207,8 +211,8 @@ class Matrix {
     void printMtrx() const;
 
    private:
-    size_t n_rows;     // (M)xN
-    size_t n_cols;     // Mx(N)
+    size_t n_rows;      // (M)xN
+    size_t n_cols;      // Mx(N)
     double *matrix_;    // A pointer to the array.
     double **rowPtrs_;  // An array of row pointers.
                         // used to avoid repeated arithmetics
