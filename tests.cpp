@@ -328,6 +328,21 @@ void testMatrix() {
     }
 
     check("Taking the dot product of incompatible matrixes throws", threw);
+
+    std::vector<double> va{1, 2, 3, 4, 5};
+
+    Matrix ma(va.begin(), va.end(), 1, 5);
+
+    std::vector<double> vb{1, 2, 3};
+    Matrix mb(vb.begin(), vb.end(), 1, 3);
+
+    check("Dot product of a.T() and b == a.Tdot(b)",
+          ma.T().dot(mb) == ma.Tdot(mb));
+    Matrix ma2 = ma.T();
+    Matrix mb2 = mb.T();
+    check("Dot product of a and b.T() == a.dotT(b)",
+          ma2.dot(mb) == ma2.dotT(mb2));
+
     testResults();
     /*
     std::cout << "mtrx*B_T:\n";

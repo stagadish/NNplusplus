@@ -98,8 +98,9 @@ bool Matrix::operator==(const Matrix &rhs) const {
     return true;
 }
 
-void checkMatrixDimensionMatch(const Matrix& lhs, const Matrix &rhs) {
-    if (lhs.getNumOfRows() != rhs.getNumOfRows() || lhs.getNumOfCols() != rhs.getNumOfCols()) {
+void checkMatrixDimensionMatch(const Matrix &lhs, const Matrix &rhs) {
+    if (lhs.getNumOfRows() != rhs.getNumOfRows() ||
+        lhs.getNumOfCols() != rhs.getNumOfCols()) {
         throw MatrixDimensionsMismatch(
             std::make_pair(lhs.getNumOfRows(), lhs.getNumOfCols()),
             std::make_pair(rhs.getNumOfRows(), rhs.getNumOfCols()));
@@ -164,7 +165,7 @@ std::ostream &operator<<(std::ostream &os, const Matrix &rhs) {
  **********************************************************/
 
 Matrix Matrix::dot(const Matrix &rhs) const {
-    if (this->n_cols != rhs.n_rows) {
+    if (n_cols != rhs.n_rows) {
         throw MatrixInnerDimensionsMismatch(
             std::make_pair(n_rows, n_cols),
             std::make_pair(rhs.n_rows, rhs.n_cols));
@@ -175,6 +176,42 @@ Matrix Matrix::dot(const Matrix &rhs) const {
             double &dot = dproduct.rowPtrs_[i][j];
             for (size_t k = 0; k < n_cols; ++k) {
                 dot += rowPtrs_[i][k] * rhs.rowPtrs_[k][j];
+            }
+        }
+    }
+    return dproduct;
+}
+
+Matrix Matrix::dotT(const Matrix &rhs) const {
+    if (n_cols != rhs.n_cols) {
+        throw MatrixInnerDimensionsMismatch(
+            std::make_pair(n_rows, n_cols),
+            std::make_pair(rhs.n_cols, rhs.n_rows));
+    }
+    Matrix dproduct(n_rows, rhs.n_rows);
+    for (size_t i = 0; i < dproduct.n_rows; ++i) {
+        for (size_t j = 0; j < dproduct.n_cols; ++j) {
+            double &dot = dproduct.rowPtrs_[i][j];
+            for (size_t k = 0; k < n_cols; ++k) {
+                dot += rowPtrs_[i][k] * rhs.rowPtrs_[j][k];
+            }
+        }
+    }
+    return dproduct;
+}
+
+Matrix Matrix::Tdot(const Matrix &rhs) const {
+    if (n_rows != rhs.n_rows) {
+        throw MatrixInnerDimensionsMismatch(
+            std::make_pair(n_cols, n_rows),
+            std::make_pair(rhs.n_rows, rhs.n_cols));
+    }
+    Matrix dproduct(n_cols, rhs.n_cols);
+    for (size_t i = 0; i < dproduct.n_rows; ++i) {
+        for (size_t j = 0; j < dproduct.n_cols; ++j) {
+            double &dot = dproduct.rowPtrs_[i][j];
+            for (size_t k = 0; k < n_rows; ++k) {
+                dot += rowPtrs_[k][i] * rhs.rowPtrs_[k][j];
             }
         }
     }

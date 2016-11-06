@@ -175,6 +175,8 @@ class Matrix {
     // Return a 0 by 0 matrix if the dimensions do not match.
     // See operator*(Matrix &rhs) for term by term multiplication.
     Matrix dot(const Matrix &rhs) const;
+    Matrix dotT(const Matrix &rhs) const;
+    Matrix Tdot(const Matrix &rhs) const;
 
     // Get number of rows (M)xN
     constexpr size_t getNumOfRows() const { return n_rows; }

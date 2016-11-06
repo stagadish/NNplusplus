@@ -152,11 +152,11 @@ void NeuralNet::trainingCycle(const Matrix &inputList, const Matrix &targetOutpu
         Matrix update(currLayerErrors);
         update *= currOutput;
         update *= 1-currOutput;
-        update = update.dot(outputs_[i].T());
+        update = update.dotT(outputs_[i]);
         update *= LR_;
         weights_[i] += update;
 
-        currLayerErrors = weights_[i].T().dot(currLayerErrors);
+        currLayerErrors = weights_[i].Tdot(currLayerErrors);
         currOutput = outputs_[i];
     }
 }
