@@ -287,7 +287,7 @@ void testMatrix() {
         threw = true;
     }
 
-    check("Adding incompatible matrixes throws", threw);
+    check("Adding incompatible matricies throws", threw);
 
     threw = false;
     try {
@@ -297,7 +297,7 @@ void testMatrix() {
         threw = true;
     }
 
-    check("Subtracting incompatible matrixes throws", threw);
+    check("Subtracting incompatible matricies throws", threw);
 
     threw = false;
     try {
@@ -307,7 +307,7 @@ void testMatrix() {
         threw = true;
     }
 
-    check("Multiplying incompatible matrixes throws", threw);
+    check("Multiplying incompatible matricies throws", threw);
 
     threw = false;
     try {
@@ -317,7 +317,7 @@ void testMatrix() {
         threw = true;
     }
 
-    check("Dividing incompatible matrixes throws", threw);
+    check("Dividing incompatible matricies throws", threw);
 
     threw = false;
     try {
@@ -327,7 +327,7 @@ void testMatrix() {
         threw = true;
     }
 
-    check("Taking the dot product of incompatible matrixes throws", threw);
+    check("Taking the dot product of incompatible matricies throws", threw);
 
     std::vector<double> va{1, 2, 3, 4, 5};
 
@@ -342,6 +342,8 @@ void testMatrix() {
     Matrix mb2 = mb.T();
     check("Dot product of a and b.T() == a.dotT(b)",
           ma2.dot(mb) == ma2.dotT(mb2));
+
+    check("a dot b == (bT dot aT)T", ma2.dot(mb) == mb2.dot(ma).T());
 
     testResults();
     /*
