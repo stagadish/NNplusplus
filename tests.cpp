@@ -202,8 +202,15 @@ void testMatrix() {
     check("Inquality a != b", mtrx != mtrxB);
     check("Inquality b != a", mtrxB != mtrx);
 
-    check("Equality with a double means equal to a matrix filled with that double " + std::to_string(init_v), mtrx==init_v);
-    check("Inequality with a double means equal to a matrix filled with that double", (init_v+1)!=mtrx);
+    check(
+        "Equality with a double means equal to a matrix filled with that "
+        "double " +
+            std::to_string(init_v),
+        mtrx == init_v);
+    check(
+        "Inequality with a double means equal to a matrix filled with that "
+        "double",
+        (init_v + 1) != mtrx);
 
     Matrix B_T = mtrxB.T();
     match = true;
@@ -270,8 +277,8 @@ void testMatrix() {
     check("Multiplication by zero equals the zero matrix 0*a == 0",
           0 * mtrxB == 0);
 
-    check("Addition of zero does not effect equality", mtrxB+0 == mtrxB);
-    check("Addition of zero does not effect inequality", mtrxB+0 != mtrx);
+    check("Addition of zero does not effect equality", mtrxB + 0 == mtrxB);
+    check("Addition of zero does not effect inequality", mtrxB + 0 != mtrx);
 
     check("Negation of a matrix and a matrix", tmp == mtrx - B_T);
 
@@ -283,7 +290,9 @@ void testMatrix() {
     check("Matrix multiplication by scalar a+a == 2*a",
           mtrx + mtrx == 2 * mtrx);
 
-    check("Equivalent matrix calculations equal", (mtrx*mtrxB+mtrx)*(mtrx+2) == (2+mtrx)*mtrx*mtrxB+mtrx*(mtrx+2));
+    check("Equivalent matrix calculations equal",
+          (mtrx * mtrxB + mtrx) * (mtrx + 2) ==
+              (2 + mtrx) * mtrx * mtrxB + mtrx * (mtrx + 2));
 
     Matrix mtrx10x11(10, 11);
     Matrix mtrx12x13(12, 13);
@@ -353,6 +362,8 @@ void testMatrix() {
           ma2.dot(mb) == ma2.dotT(mb2));
 
     check("a dot b == (bT dot aT)T", ma2.dot(mb) == mb2.dot(ma).T());
+
+    check("Division by a matrix", mtrx / mtrxB == (1.0 / mtrxB) * mtrx);
 
     testResults();
     /*
