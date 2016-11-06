@@ -148,9 +148,14 @@ void testMatrix() {
     bool match;
 
     Matrix mtrx(m, n);
+    Matrix mtrxB(n, m);
+    const Matrix zero(m, n);
 
     check("Initialization size (rows)", mtrx.getNumOfRows() == m);
     check("Initialization size (columns)", mtrx.getNumOfCols() == n);
+
+    check("Initialization size B (rows)", mtrx.getNumOfRows() == n);
+    check("Initialization size B (columns)", mtrx.getNumOfCols() == m);
 
     match = true;
     mtrx.apply([&match](const double &x) {
@@ -165,10 +170,6 @@ void testMatrix() {
         if (x != init_v) match = false;
     });
     check("Initialize all mtrx entries to " + std::to_string(init_v), match);
-
-    Matrix mtrxB(n, m);
-    check("Initialization size B (rows)", mtrx.getNumOfRows() == n);
-    check("Initialization size B (columns)", mtrx.getNumOfCols() == m);
 
     int count = 1;
     mtrxB.apply([&count](double &x) { x = count++; });
@@ -201,6 +202,7 @@ void testMatrix() {
     check("Const equality (const a)(i, j) == a(i, j)", match);
 
     check("Inquality a != b", mtrx != mtrxB);
+    check("Inquality b != a", mtrxB != mtrx);
 
     Matrix B_T = mtrxB.T();
     match = true;
@@ -263,8 +265,12 @@ void testMatrix() {
     }
     check("Internal addition of a matrix and a matrix", match);
 
-    Matrix zero(m, n);
     check("Negation a-a == 0", mtrxB - mtrxB == zero);
+    check("Multiplication by zero equals the zero matrix 0*a == 0",
+          0 * mtrxB == zero);
+
+    check("Addition of zero does not effect equality", mtrxB+zero == mtrxB);
+    check("Addition of zero does not effect inequality", mtrxB+zero != mtrx);
 
     check("Negation of a matrix and a matrix", tmp == mtrx - B_T);
 
@@ -276,6 +282,8 @@ void testMatrix() {
     check("Matrix multiplication by scalar a+a == 2*a",
           mtrx + mtrx == 2 * mtrx);
 
+    check("Equivalent matrix calculations equal", (mtrx*mtrxB+mtrx)*(mtrx+2) == (2+mtrx)*mtrx*mtrxB+mtrx*(mtrx+2));
+
     Matrix mtrx10x11(10, 11);
     Matrix mtrx12x13(12, 13);
 
@@ -283,7 +291,7 @@ void testMatrix() {
     try {
         mtrx10x11 += mtrx12x13;
     } catch (std::exception &) {
-        //std::cout << e.what() << '\n';
+        // std::cout << e.what() << '\n';
         threw = true;
     }
 
@@ -293,7 +301,7 @@ void testMatrix() {
     try {
         mtrx10x11 -= mtrx12x13;
     } catch (std::exception &) {
-        //std::cout << e.what() << '\n';
+        // std::cout << e.what() << '\n';
         threw = true;
     }
 
@@ -303,7 +311,7 @@ void testMatrix() {
     try {
         mtrx10x11 *= mtrx12x13;
     } catch (std::exception &) {
-        //std::cout << e.what() << '\n';
+        // std::cout << e.what() << '\n';
         threw = true;
     }
 
@@ -313,7 +321,7 @@ void testMatrix() {
     try {
         mtrx10x11 /= mtrx12x13;
     } catch (std::exception &) {
-        //std::cout << e.what() << '\n';
+        // std::cout << e.what() << '\n';
         threw = true;
     }
 
@@ -323,7 +331,7 @@ void testMatrix() {
     try {
         mtrx10x11.dot(mtrx12x13);
     } catch (std::exception &) {
-        //std::cout << e.what() << '\n';
+        // std::cout << e.what() << '\n';
         threw = true;
     }
 
