@@ -276,6 +276,58 @@ void testMatrix() {
     check("Matrix multiplication by scalar a+a == 2*a",
           mtrx + mtrx == 2 * mtrx);
 
+    Matrix mtrx10x11(10, 11);
+    Matrix mtrx12x13(12, 13);
+
+    bool threw = false;
+    try {
+        mtrx10x11 += mtrx12x13;
+    } catch (std::exception &) {
+        //std::cout << e.what() << '\n';
+        threw = true;
+    }
+
+    check("Adding incompatible matrixes throws", threw);
+
+    threw = false;
+    try {
+        mtrx10x11 -= mtrx12x13;
+    } catch (std::exception &) {
+        //std::cout << e.what() << '\n';
+        threw = true;
+    }
+
+    check("Subtracting incompatible matrixes throws", threw);
+
+    threw = false;
+    try {
+        mtrx10x11 *= mtrx12x13;
+    } catch (std::exception &) {
+        //std::cout << e.what() << '\n';
+        threw = true;
+    }
+
+    check("Multiplying incompatible matrixes throws", threw);
+
+    threw = false;
+    try {
+        mtrx10x11 /= mtrx12x13;
+    } catch (std::exception &) {
+        //std::cout << e.what() << '\n';
+        threw = true;
+    }
+
+    check("Dividing incompatible matrixes throws", threw);
+
+    threw = false;
+    try {
+        mtrx10x11.dot(mtrx12x13);
+    } catch (std::exception &) {
+        //std::cout << e.what() << '\n';
+        threw = true;
+    }
+
+    check("Taking the dot product of incompatible matrixes throws", threw);
     testResults();
     /*
     std::cout << "mtrx*B_T:\n";

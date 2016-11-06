@@ -98,11 +98,17 @@ bool Matrix::operator==(const Matrix &rhs) const {
     return true;
 }
 
+void checkMatrixDimensionMatch(const Matrix& lhs, const Matrix &rhs) {
+    if (lhs.getNumOfRows() != rhs.getNumOfRows() || lhs.getNumOfCols() != rhs.getNumOfCols()) {
+        throw MatrixDimensionsMismatch(
+            std::make_pair(lhs.getNumOfRows(), lhs.getNumOfCols()),
+            std::make_pair(rhs.getNumOfRows(), rhs.getNumOfCols()));
+    }
+}
+
 // ADDITION
 Matrix &Matrix::operator+=(const Matrix &rhs) {
-    if (n_rows != rhs.n_rows || n_cols != rhs.n_cols) {
-        throw MatrixDimensionsMismatch();
-    }
+    checkMatrixDimensionMatch(*this, rhs);
     for (size_t i = 0; i < size(); ++i) {
         matrix_[i] += rhs.matrix_[i];
     }
@@ -111,9 +117,7 @@ Matrix &Matrix::operator+=(const Matrix &rhs) {
 
 // SUBTRACTION
 Matrix &Matrix::operator-=(const Matrix &rhs) {
-    if (n_rows != rhs.n_rows || n_cols != rhs.n_cols) {
-        throw MatrixDimensionsMismatch();
-    }
+    checkMatrixDimensionMatch(*this, rhs);
     for (size_t i = 0; i < size(); ++i) {
         matrix_[i] -= rhs.matrix_[i];
     }
@@ -122,10 +126,7 @@ Matrix &Matrix::operator-=(const Matrix &rhs) {
 
 // MULTIPLICATION
 Matrix &Matrix::operator*=(const Matrix &rhs) {
-    if (n_rows != rhs.n_rows || n_cols != rhs.n_cols) {
-        throw MatrixDimensionsMismatch();
-    }
-
+    checkMatrixDimensionMatch(*this, rhs);
     for (size_t i = 0; i < size(); ++i) {
         matrix_[i] *= rhs.matrix_[i];
     }
@@ -134,9 +135,7 @@ Matrix &Matrix::operator*=(const Matrix &rhs) {
 
 // DIVISION
 Matrix &Matrix::operator/=(const Matrix &rhs) {
-    if (n_rows != rhs.n_rows || n_cols != rhs.n_cols) {
-        throw MatrixDimensionsMismatch();
-    }
+    checkMatrixDimensionMatch(*this, rhs);
     for (size_t i = 0; i < size(); ++i) {
         matrix_[i] /= rhs.matrix_[i];
     }
@@ -166,7 +165,9 @@ std::ostream &operator<<(std::ostream &os, const Matrix &rhs) {
 
 Matrix Matrix::dot(const Matrix &rhs) const {
     if (this->n_cols != rhs.n_rows) {
-        throw MatrixInnerDimensionsMismatch();
+        throw MatrixInnerDimensionsMismatch(
+            std::make_pair(n_rows, n_cols),
+            std::make_pair(rhs.n_rows, rhs.n_cols));
     }
     Matrix dproduct(n_rows, rhs.n_cols);
     for (size_t i = 0; i < dproduct.n_rows; ++i) {

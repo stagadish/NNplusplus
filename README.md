@@ -198,7 +198,7 @@ AND THAT'S IT!
 
 ## TODO
 1. Either improve on or replace my Matrix class for better/faster performance
-2. Give better error information (i.e. the size of the Matrices in MatrixDimensionsMismatch etc.)
+2. Use templated Matrixes so that the compiler can optimize and we can use std::array
 3. Use more STL functions and classes like std::array, std::equal etc.
 
 ## Authors
