@@ -31,9 +31,10 @@ class Matrix {
     template <typename IT>
     Matrix(const IT begin, const IT end, const size_t m, const size_t n)
         : Matrix(m, n) {
-            size_t size = std::distance(begin, end);
+        size_t size = std::distance(begin, end);
         if (m * n != size) {
-            throw MatrixDimensionsMismatch(std::make_pair(m, n), std::make_pair(size, 1));
+            throw MatrixDimensionsMismatch(std::make_pair(m, n),
+                                           std::make_pair(size, 1));
         }
         std::copy(begin, end, matrix_);
     }
@@ -70,7 +71,19 @@ class Matrix {
 
     // EQUALITY
     bool operator==(const Matrix &rhs) const;
-    bool operator!=(const Matrix &rhs) const { return !((*this) == rhs); }
+    bool operator==(const double &rhs) const;
+    friend bool operator==(const double &lhs, const Matrix &rhs) {
+        return rhs == lhs;
+    }
+    friend bool operator!=(const double &lhs, const Matrix &rhs) {
+        return !(lhs == rhs);
+    }
+    friend bool operator!=(const Matrix &lhs, const double &rhs) {
+        return !(lhs == rhs);
+    }
+    friend bool operator!=(const Matrix &lhs, const Matrix &rhs) {
+        return !(lhs == rhs);
+    }
 
     // ADDITION
     Matrix &operator+=(const Matrix &rhs);

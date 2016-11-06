@@ -88,6 +88,13 @@ const double &Matrix::operator()(const size_t row, const size_t col) const {
     return rowPtrs_[row][col];
 }
 
+bool Matrix::operator==(const double &x) const {
+    for (size_t i = 0; i < size(); ++i) {
+        if (matrix_[i] != x) return false;
+    }
+    return true;
+}
+
 bool Matrix::operator==(const Matrix &rhs) const {
     if (rhs.n_rows != n_rows) return false;
     if (rhs.n_cols != n_cols) return false;

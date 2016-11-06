@@ -149,7 +149,6 @@ void testMatrix() {
 
     Matrix mtrx(m, n);
     Matrix mtrxB(n, m);
-    const Matrix zero(m, n);
 
     check("Initialization size (rows)", mtrx.getNumOfRows() == m);
     check("Initialization size (columns)", mtrx.getNumOfCols() == n);
@@ -170,7 +169,6 @@ void testMatrix() {
         if (x != init_v) match = false;
     });
     check("Initialize all mtrx entries to " + std::to_string(init_v), match);
-
     int count = 1;
     mtrxB.apply([&count](double &x) { x = count++; });
 
@@ -203,6 +201,9 @@ void testMatrix() {
 
     check("Inquality a != b", mtrx != mtrxB);
     check("Inquality b != a", mtrxB != mtrx);
+
+    check("Equality with a double means equal to a matrix filled with that double " + std::to_string(init_v), mtrx==init_v);
+    check("Inequality with a double means equal to a matrix filled with that double", (init_v+1)!=mtrx);
 
     Matrix B_T = mtrxB.T();
     match = true;
@@ -265,12 +266,12 @@ void testMatrix() {
     }
     check("Internal addition of a matrix and a matrix", match);
 
-    check("Negation a-a == 0", mtrxB - mtrxB == zero);
+    check("Negation a-a == 0", mtrxB - mtrxB == 0);
     check("Multiplication by zero equals the zero matrix 0*a == 0",
-          0 * mtrxB == zero);
+          0 * mtrxB == 0);
 
-    check("Addition of zero does not effect equality", mtrxB+zero == mtrxB);
-    check("Addition of zero does not effect inequality", mtrxB+zero != mtrx);
+    check("Addition of zero does not effect equality", mtrxB+0 == mtrxB);
+    check("Addition of zero does not effect inequality", mtrxB+0 != mtrx);
 
     check("Negation of a matrix and a matrix", tmp == mtrx - B_T);
 
