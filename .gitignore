@@ -5,7 +5,13 @@
 *.dll
 *.exe
 *.o
+*.gch
 *.so
+
+# Executables #
+###############
+main
+tests
 
 # Packages #
 ############
